@@ -12,6 +12,7 @@ void draw_magic_box(int n)
   int current_col = n / 2;
   int i = 1;
   printWithColor("1", "blue", current_col * cell, current_row);
+  sleepFor(1);
   // current_col = (current_col + 1) % n;
   // current_row = (current_row - 1 < 3) ? init_row + n - 1 : current_row - 1;
   // printWithColor("2", "blue", current_col * cell, current_row);
@@ -40,13 +41,13 @@ void draw_magic_box(int n)
     if ((i - 1) % n == 0)
     {
       current_row = init_row + ((current_row + 1) % n);
-      printWithColor(to_string(i), "blue", current_col * cell, current_row);
     }
     else
     {
       current_col = (current_col + 1) % n;
       current_row = (current_row - 1 < init_row) ? init_row + n - 1 : current_row - 1;
-      printWithColor(to_string(i), "blue", current_col * cell, current_row);
     }
+    printWithColor(to_string(i), "blue", current_col * cell, current_row);
+    sleepFor(1);
   }
 }
