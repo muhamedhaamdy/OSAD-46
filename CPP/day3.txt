@@ -1,0 +1,81 @@
+tar cvf == > create virtual file
+                   tar xvf ==
+    > extrart ~~tar tvf == > display ~~
+
+                                   tar -
+                                   cjvf ==
+    > this compress and archive using bzip2 tool
+                tar -
+            czvf ==
+    > this compress and archive using gzip tool
+
+                and the extrart is the same but with 'x'
+
+            tar -
+            xjvf ==
+    > this compress and archive using bzip2 tool
+                tar -
+            xzvf ==
+    > this compress and archive using gzip tool
+
+        -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+#ifndef == > preprocessor keyword and put in.h files to disallow to make a multiple defined varables or typedef.
+
+#ifndef STANDARDTYPE
+#define STANDARDTYPE
+
+#endif
+
+#OVERFLOW
+
+        SIGNED char range[-128, 127]
+
+        so what about if i make
+
+        char x = -128 char y = -x;
+
+cout << y;
+
+what is the output ? ? ? ?
+
+                         it will be - 128;
+
+so how ? ?
+
+         as this is like a cycle and the cycle starts with > -128 - 127 - 126 ......... .127
+
+             and the end of it it pointing to the start of the cycle.
+
+                 so what is after 127
+    ? ? == == > not 128 its - 128 as its is the begining fo the cycle : X
+
+                                                                            WHAT ABOUT int r = 134;
+char m = r;
+
+cout << m;
+
+what is the output : D
+
+it will be - 122
+
+I hope you got it XD
+
+=============================================================
+if (cond)
+{
+  printf('hello');
+}
+else
+{
+  printf('world');
+}
+
+what is cond to print "hello world" ?
+
+if (!printf('hello ')){
+  printf('hello');
+}
+else
+{
+  printf('world');
+}

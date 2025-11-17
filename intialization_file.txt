@@ -1,0 +1,19 @@
+what is the difference between .bashrc, /etc/bash.bashrc , .profile and /etc/profile
+
+
+so the main difference between them all come down two key questions.
+
+1- Who is it for? (just you or all users on system)
+2- When does it run? (when you first log in, or every time you open new terminal)
+
+
+1- WHO IS IT FOR???
+
+User Specific ==> ~/.bashrc && ~/.profile
+System Wide ==> /etc/bahs.bashrc && /etc/profile
+
+2- WHEN IS IT READ
+
+login shell ===> /etc/profile && ~/.profile (must be you who start the login shell)
+
+interactive (non login shell) ====> ~/.bashrc  && ~/etc/
