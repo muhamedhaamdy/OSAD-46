@@ -42,7 +42,7 @@ void sleepFor(int seconds)
 // For Linux and macOS
 void gotoXY(int x, int y)
 {
-  cout << "\033[" << y << ";" << x << "H";
+  cout << "\033[" << y + 10 << ";" << x << "H";
 }
 
 void printWithColor(const string &text, const string &color, int x, int y)
