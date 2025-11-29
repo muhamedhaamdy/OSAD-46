@@ -13,6 +13,8 @@
 
 using namespace std;
 
+char lastChar = '\0';
+
 #ifdef _WIN32
 
 void clearScreen()
@@ -126,16 +128,10 @@ static void setRawMode(bool enable)
         raw = false;
     }
 }
-void disableRaw()
-{
-#ifndef _WIN32
-    setRawMode(false);
-#endif
-}
 
 Key getKey()
 {
-    setRawMode(true);
+    setRawMode(true); // turn on raw mode before reading
 
     char ch = getchar();
 
@@ -145,24 +141,45 @@ Key getKey()
         return ENTER_KEY;
     }
 
+    // BACKSPACE: ASCII 127 (Linux) or 8 (some terminals)
+    if (ch == 127 || ch == 8)
+    {
+        setRawMode(false);
+        return BACKSPACE_KEY;
+    }
+
+    // ESC or Arrow keys
     if (ch == '\033')
     {
         char ch1 = getchar();
+
+        // Single ESC press (ESC key)
+        if (ch1 != '[')
+        {
+            setRawMode(false);
+            return ESC_KEY;
+        }
+
         char ch2 = getchar();
 
-        setRawMode(false);
+        setRawMode(false); // Don't forget this!
 
-        if (ch1 == '[')
-        {
-            if (ch2 == 'A')
-                return UP;
-            if (ch2 == 'B')
-                return DOWN;
-            if (ch2 == 'C')
-                return RIGHT;
-            if (ch2 == 'D')
-                return LEFT;
-        }
+        if (ch2 == 'A')
+            return UP;
+        if (ch2 == 'B')
+            return DOWN;
+        if (ch2 == 'C')
+            return RIGHT;
+        if (ch2 == 'D')
+            return LEFT;
+    }
+
+    // Handle printable characters (space to ~)
+    if (ch >= 32 && ch <= 126)
+    {
+        lastChar = ch;
+        setRawMode(false);
+        return CHAR_KEY;
     }
 
     setRawMode(false);

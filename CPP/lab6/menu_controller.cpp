@@ -1,13 +1,5 @@
 #include "menu_controller.h"
 #include "screen_utils.h"
-#include <limits>
-#include <unistd.h>
-#include <termios.h>
-
-#ifndef _WIN32
-#include <unistd.h>  // for STDIN_FILENO
-#include <termios.h> // for tcflush + TCIFLUSH
-#endif
 
 void runMenu()
 {
@@ -28,7 +20,6 @@ void runMenu()
         else if (k == ENTER_KEY)
         {
             clearScreen();
-            disableRaw();
             if (selected == 0)
                 new_menu();
             else if (selected == 1)
@@ -38,18 +29,8 @@ void runMenu()
                 running = false;
                 break;
             }
-            disableRaw();
             cout << "\n\nPress ENTER to go back...";
-
-            // Clear leftover ESC sequences (arrow keys)
-            cin.clear();
-
-#ifdef _WIN32
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-#else
-            tcflush(STDIN_FILENO, TCIFLUSH);
-#endif
-
+            cin.ignore();
             cin.get();
         }
     }

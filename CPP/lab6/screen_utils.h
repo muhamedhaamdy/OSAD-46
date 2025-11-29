@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <string>
+#include <bits/stdc++.h>
 
 // Colors for Linux/macOS
 #ifndef _WIN32
@@ -23,7 +24,6 @@ void gotoXY(int x, int y);
 void printWithColor(const string &text, const string &color, int x, int y);
 void sleepMs(int ms);
 void starting_screen_draw(int selected);
-void disableRaw();
 
 // --------- KEYS ---------
 enum Key
@@ -33,8 +33,12 @@ enum Key
   DOWN,
   LEFT,
   RIGHT,
-  ENTER_KEY
+  ESC_KEY,
+  BACKSPACE_KEY,
+  ENTER_KEY,
+  CHAR_KEY
 };
+extern char lastChar; // To store the last character read
 
 Key getKey();
 
