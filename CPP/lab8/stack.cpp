@@ -1,5 +1,5 @@
 #include "stack.h"
-
+#include <cstring>
 Stack::Stack(int len)
 {
   this->len = len;
@@ -68,4 +68,16 @@ void Stack::display()
   }
   for (int i = tos; i >= 0; i--)
     cout << '[' << this->stack[i] << ']' << endl;
+}
+
+Stack &Stack::operator=(const Stack &s)
+{
+  if (this == &s)
+    return *this;
+  delete[] this->stack;
+  this->len = s.len;
+  this->tos = s.tos;
+  this->stack = new int[this->len];
+  memcpy(this->stack, s.stack, this->tos * sizeof(int));
+  return *this;
 }

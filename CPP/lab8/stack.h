@@ -18,6 +18,7 @@ public:
   bool empty();
   int size();
   void display();
+  Stack &operator=(const Stack &rhs);
 };
 
 #endif
