@@ -1,10 +1,15 @@
 #include "stack.h"
 
-Stack::Stack(int len = 10)
+Stack::Stack(int len)
 {
   this->len = len;
   this->tos = -1;
   this->stack = new int[len];
+}
+
+Stack::~Stack()
+{
+  delete[] stack;
 }
 
 int Stack::push(int data)
@@ -51,10 +56,10 @@ bool Stack::empty()
 
 int Stack::size()
 {
-  return this->tos;
+  return this->tos + 1;
 }
 
-void Stack::dispaly()
+void Stack::display()
 {
   if (tos == -1)
   {
