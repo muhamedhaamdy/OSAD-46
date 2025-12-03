@@ -1,42 +1,57 @@
 #ifndef LIST_H
 #define LIST_H
 
-#include <string>
 #include <iostream>
-#include <cctype>
+#include <string>
+#include "datatype.h"
 
 using namespace std;
 
 class List
 {
-private:
-  struct Node
-  {
-    string data; // stored as string
-    string type; // "int", "double", "string"
-    Node *next;
-  };
+  DataType **items;
+  int capacity;
+  int count;
 
-  Node *head;
-  int list_size;
+  DataType *createObject(int v)
+  {
+    return new IntType(v);
+  }
+
+  DataType *createObject(double v)
+  {
+    return new FloatType(v);
+  }
+
+  DataType *createObject(const char *v)
+  {
+    return new StringType(string(v));
+  }
+
+  DataType *createObject(const string &v)
+  {
+    return new StringType(v);
+  }
 
 public:
-  DynamicList();
-  ~DynamicList();
+  List(int n);
+  ~List();
 
-  void append(const string &data, const string &type);
-  int size() const;
-  string get_value(int index) const;
-  string get_type(int index) const;
+  template <typename T>
+  void append(const T &value)
+  {
+    if (count < capacity)
+    {
+      items[count] = createObject(value);
+      count++;
+    }
+    else
+    {
+      cout << "List is full!" << endl;
+    }
+  }
+  DataType *operator[](int index) const;
+  void print() const;
 };
 
-// Trim spaces from both ends of a string (in-place)
-void trim_string(string &s);
-
-// Check if string is an integer
-bool is_int_string(const string &s);
-
-// Check if string is a double
-bool is_double_string(const string &s);
-
-#endif // DYNAMICLIST_H
+#endif
