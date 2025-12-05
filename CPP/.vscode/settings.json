@@ -61,6 +61,12 @@
     "iostream": "cpp",
     "bitset": "cpp",
     "string_view": "cpp",
-    "stacktrace": "cpp"
+    "stacktrace": "cpp",
+    "complex": "cpp",
+    "iosfwd": "cpp",
+    "ranges": "cpp",
+    "format": "cpp",
+    "string": "cpp",
+    "ostream": "cpp"
   }
 }

@@ -1,6 +1,6 @@
 class Lab3 {
     public static void main(String[] args) {
-        String ip = "192.168.1";
+        String ip = "a";
 
         if (isValidIP(ip)) {
             System.out.println("Valid IP");

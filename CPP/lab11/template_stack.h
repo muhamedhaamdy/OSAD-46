@@ -27,7 +27,7 @@ Template_Stack<T>::Template_Stack()
 {
   this->capacity = CAPACITY;
   this->tos = -1;
-  this->stack = (T *)malloc(this->capacity);
+  this->stack = (T *)malloc(this->capacity * sizeof(T));
 }
 
 template <class T>
@@ -41,7 +41,7 @@ void Template_Stack<T>::push(T data)
 {
   if (tos == CAPACITY)
   {
-    realloc(this->stack, this->capacity * 2);
+    realloc(this->stack, this->capacity * 2 * sizeof(T));
   }
   this->tos++;
   this->stack[this->tos] = data;
@@ -51,10 +51,7 @@ template <class T>
 T Template_Stack<T>::pop()
 {
   if (tos == -1)
-  {
-    cout << "the stack already empty";
-    return -1;
-  }
+    throw std::out_of_range("Stack already empty");
   T curr = this->stack[this->tos];
   this->tos--;
   return curr;
@@ -64,10 +61,7 @@ template <class T>
 T Template_Stack<T>::top()
 {
   if (tos == -1)
-  {
-    cout << "the stack already empty";
-    return -1;
-  }
+    throw std::out_of_range("Stack already empty");
   return this->stack[this->tos];
 }
 

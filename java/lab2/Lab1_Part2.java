@@ -12,10 +12,10 @@ class Lab1_Part2 {
 
 		int index = 0;
 		int c =0;
-    while ((sentence.indexOf(word, index)) != -1)
+    while (sentence.indexOf(word, index) != -1)
 		{
 			c++;
-			index += word.length();
+			index += sentence.indexOf(word, index) + word.length();
 		}
 		System.out.print(c);
 	}
