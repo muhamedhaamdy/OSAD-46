@@ -2,8 +2,6 @@
 #include <typeinfo>
 #include <string.h>
 
-
-
 int main()
 {
   Template_Stack<int> st_int;
@@ -16,7 +14,6 @@ int main()
   st_float.push(1);
   st_float.push(4.5);
 
-
   cout << st_str.pop();
   st_str.push("hello world");
   st_str.push("mohamed ahmed hamdy");
@@ -24,7 +21,7 @@ int main()
 
   // cout << st_int.pop() << endl;
   // cout << st_int.top() << endl;
-  
+
   // cout << "float stack\n";
   // cout << st_float.top() << endl;
   // st_float.pop();
@@ -33,5 +30,4 @@ int main()
   // cout << st_str.top() << endl;
   // st_str.pop();
   // cout << st_str.top() << endl;
-
 }
