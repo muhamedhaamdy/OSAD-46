@@ -52,13 +52,11 @@ String::String(const String &other)
   memcpy(buffer, other.buffer, len + 1);
 }
 
-// Destructor
 String::~String()
 {
   free(buffer);
 }
 
-// Assignment
 String &String::operator=(const String &other)
 {
   if (this == &other)
@@ -74,7 +72,6 @@ String &String::operator=(const String &other)
   return *this;
 }
 
-// Indexing
 char &String::operator[](int index)
 {
   if (index < 0 || index >= len)
@@ -89,7 +86,6 @@ const char &String::operator[](int index) const
   return buffer[index];
 }
 
-// Concatenation
 String String::operator+(const String &other) const
 {
   String result;
@@ -118,7 +114,6 @@ String &String::operator+=(const char *cstr)
   return *this;
 }
 
-// Comparison
 bool String::operator==(const String &other) const
 {
   if (len != other.len)
@@ -131,7 +126,6 @@ bool String::operator!=(const String &other) const
   return !(*this == other);
 }
 
-// Output
 ostream &operator<<(ostream &out, const String &str)
 {
   out << str.buffer;

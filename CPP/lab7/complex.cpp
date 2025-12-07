@@ -21,6 +21,16 @@ bool Complex::operator!=(const Complex &rhs) const
   return !(*this == rhs);
 }
 
+int Complex::operator[](const int indx)
+{
+  if (indx == 0)
+    return this.real;
+  else if (indx == 1)
+    return this.img;
+  else
+    std::cerr << "invalid index"
+}
+
 ostream &operator<<(ostream &out, const Complex &c)
 {
   out << c.real;

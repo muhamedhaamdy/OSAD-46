@@ -1,0 +1,512 @@
+//Void Pointer  
+int x=10;
+  float y=15.5; 
+  /*
+  int * ptr=&x; 
+  float * ptr2=&y; 
+  */
+  void * ptr=&x;
+  *(int *)ptr=20;
+  printf("%d",*(int *)ptr);
+  ptr=&y;
+  *(float *)ptr=20.5;
+  printf("%f",*(float *)ptr);
+  int number=(int)*(float *)ptr; //(int) Casting Data , (float *) casting derefernce
+  //Malloc ===> Address of Memory , NULL  
+
+
+=================================
+
+
+#include<iostream>
+#include<stdio.h>
+#include<stdlib.h>
+using namespace std;
+ 
+/*int * Function(){
+    int x;
+    return &x;
+}
+*/
+ 
+ 
+void * reallocMina(void * ptr,int oldSize,int newSize){
+ 
+    void * newPtr=malloc(newSize);
+    if(ptr==NULL){
+         return malloc(newSize);  
+    }
+    if(newSize==0){
+        free(ptr);
+        return NULL;
+    }
+   if(newSize> oldSize){ 
+      if(newPtr!= NULL){
+        unsigned char * des=(unsigned char *)newPtr;
+        unsigned char * source=(unsigned char *)ptr;
+        for(int i=0; i<oldSize; i++){
+           des[i]=source[i]; 
+        }  // Loop 4 Integer
+      }else{
+        cout<<"Failed Memory allocation "<<endl;
+        return NULL;
+      }
+   }
+    free(ptr);
+    return newPtr;
+}
+ 
+//void Pointer ====> Pointer can be cast any Type 
+int main() {
+
+ 
+  
+  int * arr =(int *)malloc(5*sizeof(int));
+  if( arr != NULL){
+      for(int i=0; i<5; i++){
+        arr[i]=5+i;  
+      }
+  }
+  else{
+    cout<<"Memory Allocation failde \n";  
+  }
+  //Calloc
+  int * arr1=(int *)calloc(5,sizeof(int));
+  if( arr1 != NULL){
+    //Access Array
+        for(int i=0; i<5; i++){
+        arr1[i]=5+i;  
+      }
+  }
+  else{
+    cout<<"Memory Allocation failde \n";  
+  }
+
+  // Using realloc 
+  arr=(int *) realloc(arr,20*sizeof(int));
+
+arr1=(int *) reallocMina(arr1,5*sizeof(int),30*sizeof(int));
+  if( arr1 != NULL){
+    //Access Array
+    for(int i=0; i<5; i++){
+        cout<<arr1[i]<<endl;  
+      }
+  }
+  else{
+    cout<<"Memory Allocation failde \n";  
+  }
+  return 0;
+}
+
+
+==============================================
+
+#include<iostream>
+#include<stdio.h>
+#include<stdlib.h>
+using namespace std;
+ 
+typedef struct Birthady{
+    int day;
+    int month;
+    int year;
+}Birthady;
+typedef struct Employee{
+  char * name; //Read Only String
+  Employee * manager;
+  Birthady bd;
+}Employee;
+//void Pointer ====> Pointer can be cast any Type 
+int main() {
+  Employee * Emp = (Employee *) malloc(3*sizeof(Employee));
+  Employee * s=(Employee *) malloc(sizeof(Employee));
+  s->name="mina";
+  s->manager=s;
+  s->bd.day=1;
+  s->bd.month=10;
+  s->bd.year=1993;
+  Emp[0].name="Anderw";
+  Emp[0].manager=s;
+  Emp[0].bd.day=1;
+  Emp[0].bd.month=10;
+  Emp[0].bd.year=1998;
+  /*if(s->manager == &s){
+  } */ 
+  printf("%s , %p \n",(Emp[0].manager)->name,(Emp[0].manager)->name);
+  char * ptr="Mark";
+  //(Emp[0].manager)->name=ptr;    //Emp[0]===> (*(Emp+0))
+  ((*(Emp+0)).manager)->name=ptr;
+ 
+  
+ 
+ 
+  return 0;
+}
+=====================================================
+#include<iostream>
+#include<stdio.h>
+#include<stdlib.h>
+using namespace std;
+ 
+#define ROWS 3 
+#define COLS 4
+int main() {
+ 
+  //Struct ---> pointerStruct ---> struct   
+  //pointer=malloc()
+  //int arr[4][3]=malloc();
+  int * ptr = (int *) calloc(ROWS*COLS,sizeof(int)); //4*3*(Int)=12(Int)
+  /*for(int i=0; i<ROWS*COLS; i++){
+      ptr[i]=i+1;  
+  }*/
+  for(int i=0; i<ROWS; i++){
+    for(int j=0;  j<COLS; j++){
+        ptr[i*COLS+j]=i+1;  
+      }
+  }
+  /*
+  i=0 , j=0 ===> [0]    ===> (i*COLS+j)
+  i=0 , j=1 ===> [1]
+  i=0 , j=2 ===> [2]
+  i=0 , j=3 ===> [3]
+  .......
+  i=1 , j=0      [4] 
+  */
+  //pointer of Pointer  
+  // ROW -----> Dynamic ---> Heap
+  // COL -----> Dynamic ---> Heap
+
+  int ** arr = (int **) calloc(ROWS , sizeof(int*) );
+  for(int i=0; i<ROWS; i++){
+    arr[i]=(int * ) calloc(COLS,sizeof(int*));  
+  }
+  for(int i=0; i<ROWS; i++){
+    for(int j=0;  j<COLS; j++){
+        arr[i][j]=i+1;  
+      }
+  } 
+  //Array of Pointer  
+  // ROW -----> Static ---> Stack
+  // COL -----> Dynamic ---> Heap
+  int * arr2[ROWS]; 
+  for(int i=0; i<ROWS; i++){  
+    arr2[i]=(int * ) calloc(COLS,sizeof(int*));  
+  }
+     for(int i=0; i<ROWS; i++){
+    for(int j=0;  j<COLS; j++){
+        arr2[i][j]=i+1;  
+      }
+  } 
+
+
+  //Pointer to Array  
+  // COL -----> Static
+  // ROW -----> Dynamic ---> Heap 
+  int (*arr3)[COLS]=(int(*)[COLS])calloc(ROWS,sizeof(*arr3));
+
+   for(int i=0; i<ROWS; i++){
+    for(int j=0;  j<COLS; j++){
+        arr3[i][j]=i+1;  
+      }
+  } 
+
+  return 0;
+}
+===============================================
+
+#include <iostream>
+#include <stdlib.h>
+using namespace std;
+typedef struct  {
+    char x;//1Byte
+    char y;//1Byte
+    int w; //4Byte
+    int v; // 4byte
+    char z; //1 Byte
+}S1;
+typedef struct  {
+    char x;//1Byte
+    char y;//1Byte
+    char z; //1 Byte
+    int w; //4Byte
+    int v; // 4byte
+}S2;
+ 
+ 
+/*
+    Stack:
+        Local Variables
+        Call Function
+        Parameter Functions
+        .............
+        Allocation : Automatic (Compile time)
+        Speed : fast
+        LifeTime : Auto Removed Whec Function Ends
+        Management : Done By Compiler
+        Common Errors : Stack OverFlow
+ 
+    .data
+        global Variables & static Variables (Initialize)
+    .bss
+        global Variables & static Variables (Un Initialize)
+ 
+    .rodata :
+         read only data
+            char * ptr = "Mina";
+            const int x=10;
+    Heap : [Dynamic Memory Allocation]
+        when Memory size is unknown at compile time
+        large data Structure cannot fit on the stack
+        ...
+            - Dynamic Array
+            - linkedlists
+            - Trees
+            - Graphs
+            - Buffers
+ 
+        Allocation : Manual (Run Time)
+        Speed : slower
+        LifeTime   : until Free or Delete Object /Variabble
+        Management : Done By developer/programmer
+        Common Errors :
+                - Memory leak
+                    int * ptr = adreess of Heap(0x000F)
+                    ptr= change address (0x000B)
+                    Data (0x000F) ?? ==> Data Without Pointer Exist in Memory Can't Be Access
+ 
+                    int * ptr = adreess of Heap(0x000F)
+                    free(ptr);
+                    ptr= change address (0x000B)
+                - dangling Pointer
+                    int * ptr1= adreess of Heap(0x000F)
+                    free(ptr);
+                    *ptr; //dangling Pointer , pointer point to destroyed data
+                - Fragmentation
+ 
+ 
+ 
+    Mina:  Linker Script
+        .o files      --->
+         Library      --->     linker  ---> file.exe , map or dump
+         LinkerScript --->
+ 
+        g++ main.cpp file.cpp -o app
+ 
+*/
+ 
+ 
+typedef union CHAR{
+  unsigned char byte;
+  //unsigned char byte[4];
+  struct Bit{
+  unsigned char b0:1;
+  unsigned char b1:1;
+  unsigned char b2:1;
+  unsigned char b3:1;
+  unsigned char b4:1;
+  unsigned char b5:1;
+  unsigned char b6:1;
+  unsigned char b7:1;
+  }Bit;
+}CHAR;
+ 
+ 
+//Preprocessor
+#define PI 3.14
+//Macros like Function =====> inline
+//#define square(x)  (x*x)
+#define square(x)  ((x)*(x))
+//Multi-line
+#define print(x) do {\
+                    printf("\n============\n");\
+                    printf("\n     %d       \n",x);\
+                    printf("\n============\n");\
+                 } while(0)
+ 
+#define VERSION 2
+ 
+//Header Guards
+/*
+#ifndef MY_HEADER
+#define MY_HEADER
+ 
+#endif
+*/
+ 
+// #Pragma ==> Compiler and Linker Keyword
+   #pragma once  // non Standard Header Guards
+int main()
+{
+    // Conditional Compilation
+    #ifdef DEBUG
+        printf("Debug Mode");
+    #else
+        printf("RunningMode Mode");
+    #endif // DEBUG
+ 
+    #if VERSION ==1
+        printf("Version 1 \n");
+    #elif VESION == 2
+        printf("Version 2 \n");
+    #else
+        printf("Version 3 \n");
+        #error "VERSION not Define"
+    #endif // VERSION
+ 
+    //printf("\n %d \n",square(2+3)); //2+3*2+3//2+6+3=11    //25
+    printf("\n %d \n",square(2+3)); //(2+3)*(2+3)//5*5=25    //25
+    print(10);
+    /*struct Employee e1;*/
+    //cout<<sizeof(S1)<<"Bytes";
+    //cout<<sizeof(S2)<<"Bytes";
+    //cout << "Hello world!" << endl;
+ 
+    //C ===>stdlib
+       //malloc() // Allocate a block of Memory given size , init value [Garbage, undefined]
+       //calloc() // Allocate a memory and Initialization 0
+       //realloc() //Resize an Existing allocated Block
+       //free() // Releases dynamically Allocated Memory
+    // C++ ===>
+        //new
+        //delete
+ 
+ 
+    //Heap Dynamic Memory Allocation
+        // Memory Leak
+                // sudo apt install valgrind  (Tools Detect Memoryleak )
+        //Dangling Pointer
+        //  free(ptr)
+        //   *ptr
+        //NULL Dereference
+            // int *ptr=(int * ) malloc();
+            //*ptr;
+ 
+ 
+	  /*int *arr2=new int;  // One Item Garbage Value
+	  int *arr3=new int(); // One item with 0 value
+	  int *arr4=new int(5); // One Item with 5 Value
+	  int *arr5=new int[5]; //Create 5 Items with Garbages Values
+	  int *arr6=new int[5](); ////Create 5 Items with 0 Values
+	  int *arr7=new int[5]{5,4,3};//Create 5 Items with 5,4,3,0,0 Values
+        */
+ 
+ 
+      //ptr=Null
+      //*ptr;
+ 
+     // new ===> Creation Object + Call Constructor
+        //C++
+        // Intitalization :Yes (Constructor, or default init )
+        // Return  : Exact type Pointer
+        // Failure : Throws Exection std::bad_alloc
+        // call Contructor ? yes
+        // Resize allowed : No
+        // Deallocated   delete or delete[]
+        // Call destructors ? yes  when use delete
+ 
+ 
+          /*char * name= (char *) malloc(20*sizeof(char));
+          name="mark";//Valid // Memory Leak
+ 
+          char * name2= "mina";
+          name2="Mark";*/
+          CHAR byte;
+          byte.Bit.b0=0;
+          byte.Bit.b1=0;
+          byte.Bit.b2=1;
+          byte.Bit.b3=1;
+          byte.Bit.b4=1;
+          byte.Bit.b5=1;
+          byte.Bit.b6=1;
+          byte.Bit.b7=1;
+           // b7   b6   b5   b4    b3    b2    b1   b0
+           // 128   64  32    16    8    4     2     1
+           //  1    1   1     1     1    1     0     0
+          printf("\n%d \n",byte.byte);//255
+ 
+    return 0;
+}
+   /*
+        #include<iostream>
+        #include<stdio.h>
+        #include<stdlib.h>
+        using namespace std;
+ 
+ 
+        void * reallocMina(void * ptr,int oldSize,int newSize){
+ 
+            void * newPtr=malloc(newSize);
+ 
+            if(ptr==NULL){
+                 return malloc(newSize);
+            }
+            if(newSize==0){
+                free(ptr);
+                return NULL;
+            }
+           if(newSize> oldSize){
+              if(newPtr!= NULL){
+                unsigned char * des=(unsigned char *)newPtr;
+                unsigned char * source=(unsigned char *)ptr;
+                for(int i=0; i<oldSize; i++){
+                   des[i]=source[i];  // 0x00 00 00 05 ====> 5
+                }  // Loop 4 Integer
+              }else{
+                cout<<"Failed Memory allocation "<<endl;
+                return NULL;
+              }
+           }
+            free(ptr);
+            return newPtr;
+ 
+        }
+ 
+        //void Pointer ====> Pointer can be cast any Type
+        int main() {
+ 
+          int * arr =(int *)malloc(5*sizeof(int));
+          if( arr != NULL){
+              for(int i=0; i<5; i++){
+                arr[i]=5+i;
+              }
+ 
+          }
+          else{
+            cout<<"Memory Allocation failde \n";
+          }
+ 
+          //Calloc
+ 
+          int * arr1=(int *)calloc(5,sizeof(int));
+          if( arr1 != NULL){
+            //Access Array
+                for(int i=0; i<5; i++){
+                arr1[i]=5+i;
+              }
+          }
+          else{
+            cout<<"Memory Allocation failde \n";
+          }
+ 
+ 
+          // Using realloc
+          arr=(int *) realloc(arr,20*sizeof(int));
+ 
+ 
+        arr1=(int *) reallocMina(arr1,5*sizeof(int),30*sizeof(int));
+          if( arr1 != NULL){
+            //Access Array
+            for(int i=0; i<5; i++){
+                cout<<arr1[i]<<endl;
+              }
+          }
+          else{
+            cout<<"Memory Allocation failde \n";
+          }
+ 
+          return 0;
+        }
+    */
+ 
+ 
+ 

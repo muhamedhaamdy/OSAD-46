@@ -18,7 +18,6 @@ public:
   void set_real(int real);
   void set_img(int img);
   void add(Complex c);
-  // arthmitic
   Complex operator+(const Complex &rhs) const;
   Complex operator+(const int &rhs) const;
   Complex operator-(const Complex &rsh) const;
@@ -27,7 +26,6 @@ public:
   Complex operator*(const int &rhs) const;
   Complex operator/(const Complex &rhs) const;
   Complex operator/(const int &rhs) const;
-  // assign
   Complex &operator=(const int rhs);
   Complex &operator+=(const Complex &rhs);
   Complex &operator+=(const int rhs);
@@ -37,11 +35,10 @@ public:
   Complex &operator*=(const int rhs);
   Complex &operator/=(const Complex &rhs);
   Complex &operator/=(const int rhs);
-  // comparison
+  int &operator[](const int indx);
   bool operator==(const Complex &rhs) const;
   bool operator!=(const Complex &rhs) const;
 
-  // friend
   friend ostream &operator<<(ostream &out, const Complex &c);
   friend istream &operator>>(istream &in, Complex &c);
 };
