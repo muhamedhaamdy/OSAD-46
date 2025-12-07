@@ -36,6 +36,10 @@ public:
   Complex &operator/=(const Complex &rhs);
   Complex &operator/=(const int rhs);
   int &operator[](const int indx);
+  Complex &operator++();
+  Complex operator++(int);
+  Complex &operator--();
+  Complex operator--(int);
   bool operator==(const Complex &rhs) const;
   bool operator!=(const Complex &rhs) const;
 

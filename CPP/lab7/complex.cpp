@@ -31,6 +31,33 @@ int Complex::operator[](const int indx)
     std::cerr << "invalid index"
 }
 
+Complex &Complex::operator++()
+{
+  this->real++;
+  this->img++;
+  return *this;
+}
+Complex Complex::operator++(int)
+{
+  Complex temp = *this; // Save current state
+  this->real++;
+  this->img++;
+  return temp; // Return the old state
+}
+Complex &Complex::operator--()
+{
+  this->real--;
+  this->img--;
+  return *this;
+}
+Complex Complex::operator--(int)
+{
+  Complex temp = *this;
+  this->real--;
+  this->img--;
+  return temp;
+}
+
 ostream &operator<<(ostream &out, const Complex &c)
 {
   out << c.real;
