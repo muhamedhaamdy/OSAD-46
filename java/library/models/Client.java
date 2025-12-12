@@ -6,23 +6,28 @@ import models.*;
 
 public class Client {
 
-    private int cId = 0;
+    private static int cId = 0;
     private int id;
     private String name;
     private String email;
     private String password;
-    private HandleItems handler = new HandleItems();
+    // private HandleItems handler;
     private String role;
     private ArrayList<LibraryItem> borrowedItems;
 
     public Client(String name, String email, String password) {
+        this(name, email, password, "client");
+    }
+
+    public Client(String name, String email, String password, String role) {
         cId++;
         this.id = cId;
         this.name = name;
         this.email = email;
         this.password = password;
         borrowedItems = new ArrayList<>();
-        role = "client";
+        this.role = role;
+        // ClientDatabase.getClients().add(this);
     }
 
     public String getEmail() {
@@ -30,7 +35,7 @@ public class Client {
     }
 
     public String getPasswrod() {
-        return email;
+        return password;
     }
 
     public String getName() {
@@ -49,6 +54,9 @@ public class Client {
         return borrowedItems;
     }
 
+    public boolean isAdmin() {
+        return role.equals("admin");
+    }
     // public void borrow(LibraryItem item) throws ItemNotFound {
     // try {
     // handler.getItemById(item.getId(), item.getType());

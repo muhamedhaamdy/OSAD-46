@@ -13,20 +13,24 @@ public class HandleClient {
     // ArrayList<LibraryItem> itemsborrwed = new ArrayList<>();
     HandleItems handler;
     Client client;
-    ArrayList<Client> clients = ClientDatabase.getClients();
+    static ArrayList<Client> clients = ClientDatabase.getClients();
 
     public HandleClient(Client client, HandleItems handler) {
         this.client = client;
         this.handler = handler;
     }
 
-    public Client getClientByEmail(String email) throws ClientNotFound {
-        for (Client c : clients) {
-            if (c.getEmail().equals(email)) {
-                return c;
-            }
-        }
-        throw new ClientNotFound("this Email is not valid");
+    // public static Client getClientByEmail(String email) throws ClientNotFound {
+    // for (Client c : clients) {
+    // if (c.getEmail().equals(email)) {
+    // return c;
+    // }
+    // }
+    // throw new ClientNotFound("this Email is not valid");
+    // }
+
+    public Client getClient() {
+        return this.client;
     }
 
     public <T extends LibraryItem> void borrowItem(int itemId, Class<T> type) {
