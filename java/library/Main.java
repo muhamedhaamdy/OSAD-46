@@ -17,14 +17,10 @@ public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        // --- Initialization ---
-        // 1. Create the Library (Holds all books/magazines)
         HandleItems library = new HandleItems();
 
-        // 2. Get the User Database
         ArrayList<Client> userDatabase = ClientDatabase.getClients();
 
-        // 3. Create the Login System (Connects Library + Users)
         Login loginSystem = new Login(library, userDatabase);
 
         ChekcEmail chekcEmail = new ChekcEmail();
@@ -36,7 +32,6 @@ public class Main {
         }
         System.out.println("Welcome to the Advanced Library System!");
 
-        // --- Main Auth Loop ---
         while (true) {
             System.out.println("\n=== LOGIN SCREEN ===");
             System.out.println("1. Login");
@@ -60,7 +55,6 @@ public class Main {
             HandleClient activeSession = null;
 
             if (choice == 1) {
-                // --- LOGIN FLOW ---
                 System.out.print("Enter Email: ");
                 String email = scanner.nextLine();
                 if (!chekcEmail.checking(email)) {
@@ -70,10 +64,6 @@ public class Main {
                 System.out.print("Enter Password: ");
                 String password = scanner.nextLine();
 
-                // TODO: User Logic Here
-                // Call your loginSystem.login(email, password)
-                // If successful, it should return a HandleClient object.
-                // activeSession = loginSystem.login(email, password);
                 activeSession = loginSystem.login(email, password);
 
                 if (activeSession != null) {
@@ -82,13 +72,7 @@ public class Main {
                     System.out.print("Login Failed!!");
                 }
 
-                // MOCK for now (Delete this when your logic is connected):
-                // System.out.println("[MOCK] Logging you in as Hamdy (Client)...");
-                // Client mockClient = new Client("Hamdy", "h@gmail.com", "123");
-                // activeSession = new HandleClient(mockClient, library);
-
             } else if (choice == 2) {
-                // --- REGISTER FLOW ---
                 System.out.print("Enter Name: ");
                 String name = scanner.nextLine();
                 System.out.print("Enter Email: ");
@@ -106,27 +90,10 @@ public class Main {
                     System.out.println(e.getMessage());
                 }
 
-                // TODO: User Logic Here
-                // Call loginSystem.register(name, email, password)
-                // Make sure to handle the ClientAlreadyExist exception!
-                /*
-                 * try {
-                 * loginSystem.register(name, email, password);
-                 * System.out.println("Registration Successful! Please login.");
-                 * } catch (ClientAlreadyExist e) {
-                 * System.out.println("Error: " + e.getMessage());
-                 * }
-                 */
             }
 
-            // --- SESSION LOOP (If Login Successful) ---
             if (activeSession != null) {
-                // Determine Role (Admin vs Client)
-                // String role = activeSession.getClient().getRole(); // Assuming you add
-                // getClient() to HandleClient
 
-                // For now, let's assume everyone is a CLIENT unless specified
-                // You need to implement getRole() checking here.
                 boolean isAdmin = activeSession.getClient().isAdmin();
 
                 if (isAdmin) {
@@ -139,7 +106,6 @@ public class Main {
         scanner.close();
     }
 
-    // --- ADMIN MENU (CMS) ---
     private static void runAdminMenu(Scanner scanner, HandleItems library) {
         while (true) {
             System.out.println("\n--- ADMIN MENU ---");
@@ -221,7 +187,6 @@ public class Main {
         }
     }
 
-    // --- CLIENT MENU (User) ---
     private static void runClientMenu(Scanner scanner, HandleClient session) {
         while (true) {
             System.out.println("\n--- CLIENT MENU ---");
@@ -259,14 +224,12 @@ public class Main {
                     session.listBorrwed();
                     break;
                 case 4:
-                    // Only Listing is allowed for clients, not adding/removing
-                    // You might need a method in HandleItems that just lists,
-                    // or access it via session.getHandler().listLibrary() if you add a getter.
+
                     System.out.println("Listing all items...");
                     break;
                 case 5:
                     System.out.println("Logging out...");
-                    return; // Returns to Auth Loop
+                    return;
                 default:
                     System.out.println("Invalid choice.");
             }
