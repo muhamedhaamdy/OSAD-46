@@ -1,18 +1,17 @@
 // package library;
 
-import java.util.Scanner;
 import controllers.HandleClient;
 import controllers.HandleItems;
+import java.util.Scanner;
 import models.Book;
-import models.Magazine;
 import models.Client;
+import models.Magazine;
 // import utils.ItemNotFound;
 
 public class Main {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-
         // Book b1 = new Book("Harry Poter");
         // Book b2 = new Book("Journy to the center of the earth");
         // Magazine m1 = new Magazine("Alahram");
@@ -27,7 +26,6 @@ public class Main {
         // handlerItem.addItem(b2);
         // handlerItem.addItem(m1);
         // handlerItem.addItem(m2);
-
         System.out.println("Welcome to the Library System!");
 
         while (true) {
@@ -42,6 +40,7 @@ public class Main {
             System.out.println("8. Add New Magazine");
             System.out.println("9. Update Item");
             System.out.println("10. Remove Item");
+            System.out.println("11. List Borrowed Items");
             System.out.print("Enter your choice: ");
 
             int choice = -1;
@@ -119,12 +118,13 @@ public class Main {
                         int uid = Integer.parseInt(scanner.nextLine());
                         System.out.print("Enter New Title: ");
                         String newTitle = scanner.nextLine();
-                        if (type == 1)
+                        if (type == 1) {
                             handlerItem.updateItemTitle(uid, Book.class, newTitle);
-                        else if (type == 2)
+                        } else if (type == 2) {
                             handlerItem.updateItemTitle(uid, Magazine.class, newTitle);
-                        else
+                        } else {
                             System.out.println("Invalid type.");
+                        }
                     } catch (NumberFormatException e) {
                         System.out.println("Invalid input.");
                     }
@@ -145,6 +145,9 @@ public class Main {
                     } catch (NumberFormatException e) {
                         System.out.println("Invalid input.");
                     }
+                    break;
+                case 11:
+                    handlerClient.listBorrwed();
                     break;
                 default:
                     System.out.println("Invalid choice. Please try again.");
