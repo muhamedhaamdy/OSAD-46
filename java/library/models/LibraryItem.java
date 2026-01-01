@@ -7,7 +7,7 @@ public abstract class LibraryItem {
     protected boolean borrowed = false;
 
     public void getItemDetails() {
-        System.out.println("id: " + id + " title: " + title);
+        System.out.println("ID: (" + id + ") title: (" + title + ")");
     }
 
     public abstract int getId();
@@ -16,9 +16,13 @@ public abstract class LibraryItem {
 
     public abstract String getType();
 
-    public abstract boolean isBorrowed();
+    public boolean isBorrowed() {
+        return this.borrowed;
+    }
 
-    public abstract void setStatus(boolean status);
+    public void setStatus(boolean status) {
+        this.borrowed = status;
+    }
 
     public void setTitle(String title) {
         this.title = title;

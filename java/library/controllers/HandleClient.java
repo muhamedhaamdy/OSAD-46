@@ -1,12 +1,14 @@
 package controllers;
 
+import models.Book;
 import models.Client;
 import models.ClientDatabase;
 
 import java.util.ArrayList;
 import models.LibraryItem;
-
 import utils.ClientNotFound;
+
+// import utils.ClientNotFound;
 
 public class HandleClient {
 
@@ -68,6 +70,7 @@ public class HandleClient {
             item.getItemDetails();
         }
     }
+
     // public void returnItem(int itemId) {
     // try {
     // LibraryItem item = handler.getItemById(itemId, );
@@ -82,4 +85,33 @@ public class HandleClient {
     // System.out.println(e.getMessage());
     // }
     // }
+    public Client getClientById(int id) {
+        // ClientDatabase db = new ClientDatabase();
+        for (Client c : ClientDatabase.getClients()) {
+            if (c.getId() == id) {
+                return c;
+            }
+        }
+        return null;
+    }
+
+    public static void listAllUsers() {
+        for (Client c : ClientDatabase.getClients()) {
+            System.out.println("ID: (" + c.getId() + ") Email: (" + c.getEmail() + ") Name: (" + c.getName() + ")");
+        }
+    }
+
+    public void deleteUser(int id) throws ClientNotFound {
+        Client client = getClientById(id);
+        for (LibraryItem item : this.client.getBorrowed()) {
+            returnItem(item.getId(), Book.class);
+        }
+        boolean isRemoved = ClientDatabase.getClients().remove(client);
+        if (!isRemoved) {
+            throw new ClientNotFound("Client Not Found!!");
+        } else {
+            System.out.println("client removed Successfully!");
+        }
+    }
+
 }

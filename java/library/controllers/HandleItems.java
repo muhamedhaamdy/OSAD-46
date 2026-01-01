@@ -4,7 +4,18 @@ package controllers;
 import models.*;
 import utils.ItemNotFound;
 
-public class HandleItems {
+interface libraryHandle {
+
+    public <T extends LibraryItem> void addItem(T b);
+
+    public <T extends LibraryItem> void removeItem(int id, Class<T> type);
+
+    public <T extends LibraryItem> void updateItemTitle(int id, Class<T> type, String newTitle);
+
+    public void listLibrary();
+}
+
+public class HandleItems implements libraryHandle {
 
     // static ArrayList<LibraryItem> items = new ArrayList<>();
     private Library library = new Library();
@@ -14,12 +25,17 @@ public class HandleItems {
     }
 
     public <T extends LibraryItem> T getItemById(int id, Class<T> type) throws ItemNotFound {
-        for (LibraryItem item : this.library.getLibraryItems()) {
-            if (item.getId() == id && type.isInstance(item)) {
-                return type.cast(item);
-            }
-        }
-        throw new ItemNotFound("Item not found");
+        return this.library.getLibraryItems().stream()
+                .filter(item -> item.getId() == (id) && type.isInstance(item))
+                .map(type::cast) // Stream<LibraryItem> -> Stream<T>
+                .findFirst()
+                .orElseThrow(() -> new ItemNotFound("Item Not Found"));
+
+        // for (LibraryItem item : this.library.getLibraryItems()) {
+        //     if (item.getId() == id && type.isInstance(item)) {
+        //         return type.cast(item);
+        //     }
+        // }
     }
 
     public int itemAt(LibraryItem item) throws ItemNotFound {

@@ -2,6 +2,7 @@
 
 import controllers.HandleClient;
 import controllers.HandleItems;
+// import controllers.Admin;
 import controllers.Login;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -9,8 +10,9 @@ import models.Book;
 import models.Client;
 import models.ClientDatabase;
 import models.Magazine;
-import utils.ClientAlreadyExist;
 import utils.ChekcEmail;
+import utils.ClientAlreadyExist;
+import utils.ClientNotFound;
 
 public class Main {
 
@@ -22,6 +24,7 @@ public class Main {
         ArrayList<Client> userDatabase = ClientDatabase.getClients();
 
         Login loginSystem = new Login(library, userDatabase);
+        // Admin admin = new Admin();
 
         ChekcEmail chekcEmail = new ChekcEmail();
         Client admin = new Client("Mohamed", "m@gmail.com", "123", "admin");
@@ -97,16 +100,16 @@ public class Main {
                 boolean isAdmin = activeSession.getClient().isAdmin();
 
                 if (isAdmin) {
-                    runAdminMenu(scanner, library);
+                    runAdminMenu(scanner, activeSession, library);
                 } else {
-                    runClientMenu(scanner, activeSession);
+                    runClientMenu(scanner, activeSession, library);
                 }
             }
         }
         scanner.close();
     }
 
-    private static void runAdminMenu(Scanner scanner, HandleItems library) {
+    private static void runAdminMenu(Scanner scanner, HandleClient session, HandleItems library) {
         while (true) {
             System.out.println("\n--- ADMIN MENU ---");
             System.out.println("1. Add Book");
@@ -114,7 +117,9 @@ public class Main {
             System.out.println("3. Remove Item");
             System.out.println("4. Update Item");
             System.out.println("5. List All Items");
-            System.out.println("6. Logout");
+            System.out.println("6. List All Users");
+            System.out.println("7. Delete User");
+            System.out.println("8. Logout");
             System.out.print("Choice: ");
 
             int choice = -1;
@@ -180,6 +185,22 @@ public class Main {
                     System.out.println("--------------------------------------");
                     break;
                 case 6:
+                    System.out.println("--------------------------------------");
+                    // Admin admin = new Admin();
+                    HandleClient.listAllUsers();
+                    System.out.println("--------------------------------------");
+                    break;
+                case 7:
+                    System.out.print("Enter User ID to Delete: ");
+                    int id = Integer.parseInt(scanner.nextLine());
+                    // Admin admin = new Admin();
+                    try {
+                        session.deleteUser(id);
+                    } catch (ClientNotFound e) {
+                        System.out.print(e);
+                    }
+                    break;
+                case 8:
                     return;
                 default:
                     System.out.println("Invalid choice.");
@@ -187,7 +208,7 @@ public class Main {
         }
     }
 
-    private static void runClientMenu(Scanner scanner, HandleClient session) {
+    private static void runClientMenu(Scanner scanner, HandleClient session, HandleItems library) {
         while (true) {
             System.out.println("\n--- CLIENT MENU ---");
             System.out.println("1. Borrow Book");
@@ -201,6 +222,7 @@ public class Main {
             try {
                 c = Integer.parseInt(scanner.nextLine());
             } catch (Exception e) {
+                // System.out.println(e);
             }
 
             switch (c) {
@@ -224,8 +246,10 @@ public class Main {
                     session.listBorrwed();
                     break;
                 case 4:
-
                     System.out.println("Listing all items...");
+                    System.out.println("--------------------------------------");
+                    library.listLibrary();
+                    System.out.println("--------------------------------------");
                     break;
                 case 5:
                     System.out.println("Logging out...");

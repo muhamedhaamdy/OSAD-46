@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class Library {
 
-    private ArrayList<LibraryItem> items = new ArrayList<>();
+    private static ArrayList<LibraryItem> items = new ArrayList<>();
 
     public ArrayList<LibraryItem> getLibraryItems() {
         return items;
