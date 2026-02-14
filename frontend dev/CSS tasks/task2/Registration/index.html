@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Member Registration</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="main-wrapper">
+        <header class="form-header">
+            <h1>Create Account</h1>
+            <p>Join our community by filling out the details below.</p>
+        </header>
+
+        <form action="submit.html" method="get" class="signup-form">
+            
+            <div class="form-section">
+                <h3>Personal Details</h3>
+                <div class="input-grid">
+                    <div class="input-box">
+                        <label for="firstName" class="required">First Name</label>
+                        <input type="text" id="firstName" name="firstName" placeholder="John" required>
+                    </div>
+
+                    <div class="input-box">
+                        <label for="lastName" class="required">Last Name</label>
+                        <input type="text" id="lastName" name="lastName" placeholder="Doe" required>
+                    </div>
+
+                    <div class="input-box full-width">
+                        <label for="email" class="required">Email Address</label>
+                        <input type="email" id="email" name="email" placeholder="john@example.com" required>
+                    </div>
+
+                    <div class="input-box">
+                        <label for="birthDate">Date of Birth</label>
+                        <input type="date" id="birthDate" name="birthDate">
+                    </div>
+
+                    <div class="input-box">
+                        <label>Gender</label>
+                        <div class="inline-options">
+                            <label class="radio-pill">
+                                <input type="radio" id="male" name="gender" value="male">
+                                <span>Male</span>
+                            </label>
+                            <label class="radio-pill">
+                                <input type="radio" id="female" name="gender" value="female">
+                                <span>Female</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <hr>
+
+            <div class="form-section">
+                <h3>Profile Information</h3>
+                <div class="input-grid">
+                    <div class="input-box">
+                        <label for="faculty">Faculty / Department</label>
+                        <div class="select-wrapper">
+                            <select id="faculty" name="faculty">
+                                <option value="" disabled selected>Select your faculty</option>
+                                <option value="engineering">Engineering</option>
+                                <option value="science">Science</option>
+                                <option value="arts">Arts</option>
+                                <option value="medicine">Medicine</option>
+                                <option value="business">Business</option>
+                                <option value="law">Law</option>
+                                <option value="education">Education</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="input-box">
+                        <label for="userPicture">Profile Picture</label>
+                        <input type="file" id="userPicture" name="userPicture" accept="image/*" class="file-input">
+                    </div>
+
+                    <div class="input-box full-width">
+                        <label>Areas of Interest</label>
+                        <div class="interest-grid">
+                            <label><input type="checkbox" name="interests" value="programming"> Programming</label>
+                            <label><input type="checkbox" name="interests" value="reading"> Reading</label>
+                            <label><input type="checkbox" name="interests" value="swimming"> Swimming</label>
+                            <label><input type="checkbox" name="interests" value="traveling"> Traveling</label>
+                            <label><input type="checkbox" name="interests" value="music"> Music</label>
+                            <label><input type="checkbox" name="interests" value="sports"> Sports</label>
+                        </div>
+                    </div>
+
+                    <div class="input-box full-width">
+                        <label for="aboutYou">Bio</label>
+                        <textarea id="aboutYou" name="aboutYou" rows="4" placeholder="Write a short bio..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <hr>
+
+            <div class="form-section">
+                <h3>Security</h3>
+                <div class="input-grid">
+                    <div class="input-box">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password">
+                    </div>
+
+                    <div class="input-box">
+                        <label for="repeatPassword">Confirm Password</label>
+                        <input type="password" id="repeatPassword" name="repeatPassword">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-footer">
+                <div class="terms-wrapper">
+                    <input type="checkbox" id="terms" name="terms" required>
+                    <label for="terms" class="required">I accept the <a href="#">Terms and Conditions</a></label>
+                </div>
+
+                <div class="action-buttons">
+                    <button type="reset" class="btn-secondary">Clear</button>
+                    <button type="submit" class="btn-primary">Register Now</button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</body>
+</html>

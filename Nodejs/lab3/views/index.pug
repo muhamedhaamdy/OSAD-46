@@ -1,0 +1,28 @@
+doctype html
+html
+  head
+    title Inventory Manager
+    link(rel='stylesheet', href='/css/style.css')
+  body
+    .container
+      h1 📦 Warehouse Inventory
+      table
+        thead
+          tr
+            th ID
+            th Name
+            th Category
+            th Quantity
+            th Status
+        tbody
+          each item in items
+            tr
+              td= item.id
+              td= item.name
+              td= item.category
+              td= item.quantity || 0
+              td
+                if item.status
+                  span.status-active Active
+                else
+                  span.status-inactive Inactive

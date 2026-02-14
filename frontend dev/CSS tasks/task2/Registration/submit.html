@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Successful</title>
+    <style>
+        /* Sharing the same Design Tokens as your new style.css 
+           to ensure a perfect match.
+        */
+        :root {
+            --primary-color: #4f46e5;
+            --primary-hover: #4338ca;
+            --bg-color: #f3f4f6;
+            --card-bg: #ffffff;
+            --text-main: #1f2937;
+            --text-muted: #6b7280;
+            --success-color: #10b981; /* Emerald Green for success mark */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .thankyou-card {
+            background: var(--card-bg);
+            padding: 60px 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+            animation: slideUp 0.6s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Animated Success Icon */
+        .icon-container {
+            width: 80px;
+            height: 80px;
+            background-color: #ecfdf5; /* Light green bg */
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 30px auto;
+        }
+
+        .checkmark {
+            width: 40px;
+            height: 40px;
+            stroke: var(--success-color);
+            stroke-width: 4;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            fill: none;
+            animation: drawCheck 1s ease forwards;
+        }
+
+        @keyframes drawCheck {
+            0% {
+                stroke-dasharray: 100;
+                stroke-dashoffset: 100;
+                opacity: 0;
+            }
+            100% {
+                stroke-dasharray: 100;
+                stroke-dashoffset: 0;
+                opacity: 1;
+            }
+        }
+
+        h1 {
+            color: var(--text-main);
+            font-size: 2rem;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .message {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 40px;
+        }
+
+        /* The Special "Thank YOU" Animation */
+        .special-thanks {
+            display: inline-block;
+            font-size: 2.5em;
+            font-weight: 800;
+            letter-spacing: 2px;
+            margin-bottom: 30px;
+        }
+
+        .special-thanks .word-1 {
+            color: var(--text-main);
+            display: inline-block;
+            animation: subtleBounce 2s ease-in-out infinite;
+        }
+
+        .special-thanks .word-2 {
+            color: var(--primary-color);
+            display: inline-block;
+            animation: subtleBounce 2s ease-in-out infinite 0.2s; /* Slight delay */
+        }
+
+        @keyframes subtleBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        /* Return Button */
+        .home-btn {
+            display: inline-block;
+            text-decoration: none;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 6px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .home-btn:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="thankyou-card">
+        <div class="icon-container">
+            <svg class="checkmark" viewBox="0 0 52 52">
+                <path d="M14 27 l10 10 l18 -18" />
+            </svg>
+        </div>
+
+        <h1>Success!</h1>
+        
+        <p class="message">
+            Your registration has been received. <br>
+            We are excited to have you on board.
+        </p>
+
+        <div class="special-thanks">
+            <span class="word-1">Thank</span> <span class="word-2">YOU</span>
+        </div>
+
+        <div>
+            <a href="index.html" class="home-btn">Return to Home</a>
+        </div>
+    </div>
+
+</body>
+</html>
