@@ -25,12 +25,14 @@
 -->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <!-- ─── META & TITLE ─── -->
   <!-- Character encoding and responsive viewport for all devices -->
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Interactive sorting algorithm visualizer featuring Bubble, Insertion, Selection, and Merge Sort with real-time animation and statistics." />
+  <meta name="description"
+    content="Interactive sorting algorithm visualizer featuring Bubble, Insertion, Selection, and Merge Sort with real-time animation and statistics." />
   <title>Sorting Algorithm Visualizer</title>
 
   <!-- ─── FONTS ─── -->
@@ -39,19 +41,23 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
     href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Orbitron:wght@500;700;900&display=swap"
-    rel="stylesheet"
-  />
+    rel="stylesheet" />
 
   <!-- ─── STYLESHEET ─── -->
   <!-- Main application styles — dark cyberpunk terminal aesthetic -->
   <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
   <!-- ═══════════════════════════════════════════════════════════════
        HEADER — Application title and tagline
        ═══════════════════════════════════════════════════════════════ -->
   <header id="app-header">
     <h1>⚡ Sorting Visualizer</h1>
+    <!-- ─── THEME TOGGLE ─── -->
+    <!-- Switches between dark and light mode; icon updates via JS -->
+    <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle Light/Dark Mode"
+      title="Toggle Light/Dark Mode">🌙</button>
     <p class="tagline">Watch algorithms in action</p>
   </header>
 
@@ -91,27 +97,13 @@
         <label for="size-slider" class="slider-label">
           Array Size: <span id="size-value">50</span>
         </label>
-        <input
-          type="range"
-          id="size-slider"
-          min="10"
-          max="200"
-          value="50"
-          aria-label="Array Size"
-        />
+        <input type="range" id="size-slider" min="10" max="200" value="50" aria-label="Array Size" />
 
         <!-- Speed slider: controls the delay (ms) between animation steps -->
         <label for="speed-slider" class="slider-label">
           Speed: <span id="speed-value">50</span>ms
         </label>
-        <input
-          type="range"
-          id="speed-slider"
-          min="1"
-          max="200"
-          value="50"
-          aria-label="Animation Speed"
-        />
+        <input type="range" id="speed-slider" min="1" max="200" value="50" aria-label="Animation Speed" />
       </div>
 
       <!-- ─── ACTION BUTTONS ─── -->
@@ -224,4 +216,5 @@
   <script src="js/sorting algorithms/mergeSort.js"></script>
   <script src="js/main.js"></script>
 </body>
+
 </html>

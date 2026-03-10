@@ -95,6 +95,9 @@ const algoDescription = document.getElementById('algo-description');
 /** All algorithm tab buttons */
 const tabButtons = document.querySelectorAll('.tab-btn');
 
+/** Theme toggle button */
+const themeToggle = document.getElementById('theme-toggle');
+
 /* ─── 3. ALGORITHM METADATA ──────────────────────────────────────
    Complexity strings and description text for each algorithm.
    Used by updateAlgoInfo() when the user switches tabs.
@@ -497,9 +500,67 @@ btnRegen.addEventListener('click', () => {
   }
 });
 
-/* ─── 11. INITIALISATION ────────────────────────────────────────
-   Run on page load: set initial info and generate the first array.
+/* --- Theme Toggle ---
+   Switches between dark and light mode. Persists the choice
+   to localStorage so it survives page reloads. */
+themeToggle.addEventListener('click', () => {
+  toggleTheme();
+});
+
+/* ─── 11. THEME MANAGEMENT ──────────────────────────────────────
+   Functions to initialise and toggle the dark/light theme.
+   The user's preference is stored in localStorage under the
+   key 'sort-viz-theme' so it persists across sessions.
    ──────────────────────────────────────────────────────────────── */
+
+/**
+ * @description Reads the saved theme preference from localStorage
+ *              and applies it to the <html> element. Falls back to
+ *              'dark' if no preference is stored. Also updates the
+ *              toggle button icon accordingly.
+ * @returns {void}
+ */
+function initTheme() {
+  /* Read stored preference, default to 'dark' */
+  const saved = localStorage.getItem('sort-viz-theme') || 'dark';
+
+  /* Apply the theme by setting the data attribute on <html> */
+  document.documentElement.setAttribute('data-theme', saved);
+
+  /* Update the button icon: moon for dark, sun for light */
+  themeToggle.textContent = saved === 'dark' ? '🌙' : '☀️';
+}
+
+/**
+ * @description Toggles between dark and light themes. Reads the
+ *              current theme from the <html> data attribute, flips
+ *              it, persists the new value to localStorage, and
+ *              updates the toggle button icon.
+ * @returns {void}
+ */
+function toggleTheme() {
+  /* Determine the current theme */
+  const current = document.documentElement.getAttribute('data-theme') || 'dark';
+
+  /* Flip to the opposite theme */
+  const next = current === 'dark' ? 'light' : 'dark';
+
+  /* Apply the new theme */
+  document.documentElement.setAttribute('data-theme', next);
+
+  /* Persist the choice so it survives page reloads */
+  localStorage.setItem('sort-viz-theme', next);
+
+  /* Update button icon: moon for dark mode, sun for light mode */
+  themeToggle.textContent = next === 'dark' ? '🌙' : '☀️';
+}
+
+/* ─── 12. INITIALISATION ────────────────────────────────────────
+   Run on page load: restore theme, set initial info, generate array.
+   ──────────────────────────────────────────────────────────────── */
+
+/* Restore the user's saved theme preference (or default to dark) */
+initTheme();
 
 /* Populate the complexity table and description for the default algorithm */
 updateAlgoInfo();

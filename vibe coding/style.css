@@ -64,6 +64,33 @@
   --clr-danger: #ff3860;
   --clr-success: #39ff14;
   --radius: 8px;
+  /* Background dot pattern opacity — overridden in light mode */
+  --dot-opacity: 0.08;
+}
+
+/* ─── LIGHT MODE OVERRIDES ──────────────────────────────────────
+   When [data-theme="light"] is set on <html>, all CSS variables
+   are swapped to a clean, bright palette. The accent stays purple
+   for brand consistency, but backgrounds become white/light grey
+   and text becomes dark. Bar state colors are slightly deepened
+   so they remain visible against the light background.
+   ──────────────────────────────────────────────────────────────── */
+[data-theme='light'] {
+  --clr-bg: #f0f2f5;
+  --clr-surface: rgba(255, 255, 255, 0.92);
+  --clr-border: #9b6dff;
+  --clr-text: #1a1a2e;
+  --clr-text-dim: #5c5c7a;
+  --clr-bar: #7b2fff;
+  --clr-bar-end: #00a8cc;
+  --clr-comparing: #e0367a;
+  --clr-swapping: #00b8d4;
+  --clr-pivot: #e6a800;
+  --clr-sorted: #2ecc40;
+  --clr-accent: #7b2fff;
+  --clr-danger: #e0344c;
+  --clr-success: #2ecc40;
+  --dot-opacity: 0.04;
 }
 
 /* ─── 2. RESET & BASE STYLES ────────────────────────────────────
@@ -88,11 +115,14 @@ body {
   background: var(--clr-bg);
   color: var(--clr-text);
   min-height: 100vh;
-  /* Subtle grid-dot background pattern for a cyberpunk terminal feel */
+  /* Subtle grid-dot background pattern — opacity controlled by CSS variable
+     so it dims in light mode via --dot-opacity */
   background-image:
-    radial-gradient(circle, rgba(123, 47, 255, 0.08) 1px, transparent 1px);
+    radial-gradient(circle, rgba(123, 47, 255, var(--dot-opacity)) 1px, transparent 1px);
   background-size: 24px 24px;
   padding: 1rem;
+  /* Smooth transition when switching themes so colors don't jump abruptly */
+  transition: background-color 0.4s ease, color 0.4s ease;
 }
 
 /* ─── 3. HEADER ─────────────────────────────────────────────────
@@ -102,6 +132,49 @@ body {
 #app-header {
   text-align: center;
   padding: 1.5rem 0 1rem;
+  /* Relative positioning so the theme toggle can be absolutely placed */
+  position: relative;
+}
+
+/* ─── THEME TOGGLE BUTTON ───────────────────────────────────────
+   Circular button positioned at the top-right of the header.
+   Shows a moon (🌙) in dark mode and a sun (☀️) in light mode.
+   Uses a glowing border that matches the accent color.
+   ──────────────────────────────────────────────────────────────── */
+.theme-toggle-btn {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 2px solid var(--clr-border);
+  background: var(--clr-surface);
+  color: var(--clr-text);
+  font-size: 1.2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  /* Neon glow matching the border */
+  box-shadow: 0 0 10px rgba(123, 47, 255, 0.25);
+}
+
+/* Hover state — stronger glow and slight scale */
+.theme-toggle-btn:hover {
+  box-shadow: 0 0 18px rgba(123, 47, 255, 0.5);
+  transform: translateY(-50%) scale(1.1);
+}
+
+/* In light mode the glow shifts to a softer purple shadow */
+[data-theme='light'] .theme-toggle-btn {
+  box-shadow: 0 2px 8px rgba(123, 47, 255, 0.15);
+}
+
+[data-theme='light'] .theme-toggle-btn:hover {
+  box-shadow: 0 2px 14px rgba(123, 47, 255, 0.35);
 }
 
 #app-header h1 {
@@ -150,6 +223,13 @@ body {
   box-shadow:
     0 0 15px rgba(123, 47, 255, 0.2),
     inset 0 0 30px rgba(123, 47, 255, 0.03);
+  /* Smooth panel transition when toggling themes */
+  transition: background-color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+/* In light mode, the panel uses a subtle grey shadow instead of neon glow */
+[data-theme='light'] #visualizer-panel {
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
 }
 
 /* Algorithm tab navigation row */
@@ -262,6 +342,13 @@ body {
   border: 1px solid rgba(123, 47, 255, 0.3);
   border-radius: var(--radius);
   padding: 1rem;
+  /* Smooth transition for theme switching */
+  transition: background-color 0.4s ease, border-color 0.4s ease;
+}
+
+/* In light mode, control groups use a softer shadow */
+[data-theme='light'] .control-group {
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.06);
 }
 
 /* Section headings inside control groups */
@@ -368,7 +455,7 @@ input[type='range']::-moz-range-thumb {
   cursor: not-allowed;
 }
 
-/* Run button — green */
+/* Run button — green. In light mode the text stays dark for contrast. */
 .run-btn {
   background: var(--clr-success);
   color: #0a0a1a;
@@ -523,10 +610,12 @@ input[type='range']::-moz-range-thumb {
     transform: scaleY(1);
     filter: brightness(1);
   }
+
   50% {
     transform: scaleY(1.08);
     filter: brightness(1.6);
   }
+
   100% {
     transform: scaleY(1);
     filter: brightness(1);
@@ -535,9 +624,12 @@ input[type='range']::-moz-range-thumb {
 
 /* Pulsing glow on the Run button while sorting is in progress */
 @keyframes pulse-run {
-  0%, 100% {
+
+  0%,
+  100% {
     box-shadow: 0 0 12px rgba(57, 255, 20, 0.3);
   }
+
   50% {
     box-shadow: 0 0 28px rgba(57, 255, 20, 0.7);
   }
