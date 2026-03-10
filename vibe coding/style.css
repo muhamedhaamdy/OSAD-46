@@ -1,0 +1,559 @@
+/*
+ ╔══════════════════════════════════════════════════════════════════╗
+ ║  File:         style.css                                        ║
+ ║  Project:      Sorting Algorithm Visualizer                     ║
+ ║  Author:       Hamdy                                            ║
+ ║  Purpose:      All visual styling for the sorting visualizer.   ║
+ ║                Dark cyberpunk / terminal aesthetic with neon     ║
+ ║                accents and glassmorphism panels. Uses CSS Grid   ║
+ ║                for the main layout (visualizer left, controls    ║
+ ║                right). Bar states are styled via utility         ║
+ ║                classes (.comparing, .swapping, .pivot, .sorted). ║
+ ║  Dependencies: Google Fonts — Orbitron, Fira Code (loaded in    ║
+ ║                index.html)                                      ║
+ ║  Structure:    1. CSS Custom Properties (color palette)         ║
+ ║                2. Reset & Base Styles                           ║
+ ║                3. Header                                        ║
+ ║                4. Main Grid Layout                              ║
+ ║                5. Visualizer Panel (tabs + bar container)       ║
+ ║                6. Bar Styles & State Classes                    ║
+ ║                7. Controls Panel                                ║
+ ║                8. Sliders                                       ║
+ ║                9. Action Buttons                                ║
+ ║               10. Stats Panel                                   ║
+ ║               11. Complexity Table                              ║
+ ║               12. Algorithm Description                         ║
+ ║               13. Color Legend                                  ║
+ ║               14. Keyframe Animations                           ║
+ ║               15. Responsive / Media Queries                   ║
+ ╚══════════════════════════════════════════════════════════════════╝
+*/
+
+/* ─── 1. CSS CUSTOM PROPERTIES ───────────────────────────────────
+   Central color palette and sizing tokens.
+   Changing these variables will theme the entire application.
+   --clr-bg:         deep dark background
+   --clr-surface:    card / panel background with transparency
+   --clr-border:     neon border glow color
+   --clr-text:       primary text
+   --clr-text-dim:   secondary / muted text
+   --clr-bar:        default unsorted bar gradient start
+   --clr-bar-end:    default unsorted bar gradient end
+   --clr-comparing:  bar color when two elements are being compared
+   --clr-swapping:   bar color when two elements are being swapped
+   --clr-pivot:      bar color for the current pivot / minimum
+   --clr-sorted:     bar color when element is in final position
+   --clr-accent:     primary accent (buttons, headings)
+   --clr-danger:     stop / error color
+   --clr-success:    run / success color
+   --radius:         default border-radius
+   ──────────────────────────────────────────────────────────────── */
+:root {
+  --clr-bg: #0a0a1a;
+  --clr-surface: rgba(15, 15, 40, 0.85);
+  --clr-border: #7b2fff;
+  --clr-text: #e0e0ff;
+  --clr-text-dim: #888aaf;
+  --clr-bar: #7b2fff;
+  --clr-bar-end: #00d4ff;
+  --clr-comparing: #ff4da6;
+  --clr-swapping: #00ffff;
+  --clr-pivot: #ffe14d;
+  --clr-sorted: #39ff14;
+  --clr-accent: #7b2fff;
+  --clr-danger: #ff3860;
+  --clr-success: #39ff14;
+  --radius: 8px;
+}
+
+/* ─── 2. RESET & BASE STYLES ────────────────────────────────────
+   Box-sizing reset, zero margins, base font, and full-viewport
+   dark background with the Orbitron heading font loaded.
+   ──────────────────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  /* Smooth scrolling for any in-page navigation */
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Fira Code', monospace;
+  background: var(--clr-bg);
+  color: var(--clr-text);
+  min-height: 100vh;
+  /* Subtle grid-dot background pattern for a cyberpunk terminal feel */
+  background-image:
+    radial-gradient(circle, rgba(123, 47, 255, 0.08) 1px, transparent 1px);
+  background-size: 24px 24px;
+  padding: 1rem;
+}
+
+/* ─── 3. HEADER ─────────────────────────────────────────────────
+   Application title bar — centered, Orbitron font, neon text
+   glow effect. The tagline uses the dim text color.
+   ──────────────────────────────────────────────────────────────── */
+#app-header {
+  text-align: center;
+  padding: 1.5rem 0 1rem;
+}
+
+#app-header h1 {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 900;
+  font-size: clamp(1.6rem, 4vw, 2.8rem);
+  /* Neon purple text-shadow glow */
+  text-shadow:
+    0 0 10px var(--clr-accent),
+    0 0 40px rgba(123, 47, 255, 0.4);
+  letter-spacing: 2px;
+}
+
+#app-header .tagline {
+  color: var(--clr-text-dim);
+  font-size: 0.85rem;
+  margin-top: 0.3rem;
+  letter-spacing: 1px;
+}
+
+/* ─── 4. MAIN GRID LAYOUT ───────────────────────────────────────
+   Two-column CSS Grid: visualizer takes ~70%, controls ~30%.
+   On small screens this collapses to a single column via media
+   query at bottom of file.
+   ──────────────────────────────────────────────────────────────── */
+#app-main {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 1.5rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* ─── 5. VISUALIZER PANEL ───────────────────────────────────────
+   Left column: algorithm tabs at top + bar chart below.
+   Glassmorphism card with neon border.
+   ──────────────────────────────────────────────────────────────── */
+#visualizer-panel {
+  background: var(--clr-surface);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--radius);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  /* Neon glow on the panel border */
+  box-shadow:
+    0 0 15px rgba(123, 47, 255, 0.2),
+    inset 0 0 30px rgba(123, 47, 255, 0.03);
+}
+
+/* Algorithm tab navigation row */
+#algo-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+/* Individual tab button */
+.tab-btn {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  padding: 0.5rem 1.2rem;
+  border: 1px solid var(--clr-border);
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--clr-text-dim);
+  cursor: pointer;
+  transition: all 0.25s ease;
+  text-transform: uppercase;
+}
+
+/* Hover state — subtle glow lift */
+.tab-btn:hover {
+  color: var(--clr-text);
+  border-color: var(--clr-accent);
+  box-shadow: 0 0 12px rgba(123, 47, 255, 0.35);
+}
+
+/* Active / selected tab — filled background with neon glow */
+.tab-btn.active {
+  background: var(--clr-accent);
+  color: #fff;
+  border-color: var(--clr-accent);
+  box-shadow: 0 0 18px rgba(123, 47, 255, 0.5);
+}
+
+/* Bar chart wrapper — flex row, items aligned to bottom so bars
+   grow upward. A minimum height ensures the chart is always visible. */
+#bar-container {
+  flex: 1;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 1px;
+  min-height: 350px;
+  padding: 0.5rem 0;
+}
+
+/* ─── 6. BAR STYLES & STATE CLASSES ─────────────────────────────
+   Each bar is an absolutely-sized <div> rendered by main.js.
+   Default gradient goes from purple to cyan.
+   State classes override the background for visual feedback.
+   The .sorted class triggers the sorted-flash keyframe.
+   ──────────────────────────────────────────────────────────────── */
+
+/* Default unsorted bar — vertical gradient from purple to cyan */
+.bar {
+  /* Width is set inline by main.js based on array size */
+  background: linear-gradient(to top, var(--clr-bar), var(--clr-bar-end));
+  border-radius: 3px 3px 0 0;
+  transition: height 0.08s ease, background 0.15s ease;
+  /* Subtle bottom glow for a neon feel */
+  box-shadow: 0 2px 6px rgba(0, 212, 255, 0.15);
+}
+
+/* Comparing state — pink / magenta */
+.bar.comparing {
+  background: var(--clr-comparing);
+  box-shadow: 0 0 10px var(--clr-comparing);
+}
+
+/* Swapping state — bright cyan */
+.bar.swapping {
+  background: var(--clr-swapping);
+  box-shadow: 0 0 10px var(--clr-swapping);
+}
+
+/* Pivot / minimum highlight — golden yellow */
+.bar.pivot {
+  background: var(--clr-pivot);
+  box-shadow: 0 0 10px var(--clr-pivot);
+}
+
+/* Sorted state — green with the sorted-flash animation */
+.bar.sorted {
+  background: var(--clr-sorted);
+  box-shadow: 0 0 12px var(--clr-sorted);
+  animation: sorted-flash 0.4s ease;
+}
+
+/* ─── 7. CONTROLS PANEL ─────────────────────────────────────────
+   Right column: stacked sections (sliders, buttons, stats, etc.).
+   Same glassmorphism card style as the visualizer panel.
+   ──────────────────────────────────────────────────────────────── */
+#controls-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Shared styles for each grouped section inside the controls panel.
+   Adds a border, padding, and translucent background. */
+.control-group {
+  background: var(--clr-surface);
+  border: 1px solid rgba(123, 47, 255, 0.3);
+  border-radius: var(--radius);
+  padding: 1rem;
+}
+
+/* Section headings inside control groups */
+.section-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--clr-accent);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+  /* Neon underline accent */
+  border-bottom: 1px solid rgba(123, 47, 255, 0.25);
+  padding-bottom: 0.4rem;
+}
+
+/* ─── 8. SLIDERS ────────────────────────────────────────────────
+   Custom-styled range inputs. The track is dark with a neon fill,
+   and the thumb is a glowing circle.
+   ──────────────────────────────────────────────────────────────── */
+.slider-label {
+  display: block;
+  font-size: 0.78rem;
+  color: var(--clr-text-dim);
+  margin-bottom: 0.3rem;
+}
+
+/* The <span> inside each label showing the current numeric value */
+.slider-label span {
+  color: var(--clr-text);
+  font-weight: 600;
+}
+
+/* Range input base reset */
+input[type='range'] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  border-radius: 3px;
+  background: rgba(123, 47, 255, 0.2);
+  outline: none;
+  margin-bottom: 0.8rem;
+  cursor: pointer;
+}
+
+/* Webkit track (Chrome, Edge, Safari) */
+input[type='range']::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--clr-accent);
+  border: 2px solid var(--clr-text);
+  cursor: pointer;
+  /* Neon thumb glow */
+  box-shadow: 0 0 8px var(--clr-accent);
+}
+
+/* Firefox thumb */
+input[type='range']::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--clr-accent);
+  border: 2px solid var(--clr-text);
+  cursor: pointer;
+  box-shadow: 0 0 8px var(--clr-accent);
+}
+
+/* ─── 9. ACTION BUTTONS ─────────────────────────────────────────
+   Run, Stop, and Regenerate buttons. Flex layout to space evenly.
+   Each has a distinct color. The Run button gains a pulse
+   animation while sorting is active (added via JS class .running).
+   ──────────────────────────────────────────────────────────────── */
+#action-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.action-btn {
+  flex: 1;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  padding: 0.65rem 0;
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: transform 0.15s ease, box-shadow 0.25s ease, opacity 0.2s ease;
+}
+
+/* Hover lift on all action buttons */
+.action-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+}
+
+/* Disabled state — faded out */
+.action-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+/* Run button — green */
+.run-btn {
+  background: var(--clr-success);
+  color: #0a0a1a;
+  box-shadow: 0 0 12px rgba(57, 255, 20, 0.3);
+}
+
+/* Run button pulse animation while sort is running */
+.run-btn.running {
+  animation: pulse-run 1s ease infinite;
+}
+
+/* Stop button — red */
+.stop-btn {
+  background: var(--clr-danger);
+  color: #fff;
+  box-shadow: 0 0 12px rgba(255, 56, 96, 0.3);
+}
+
+/* Regenerate button — purple accent */
+.regen-btn {
+  background: var(--clr-accent);
+  color: #fff;
+  box-shadow: 0 0 12px rgba(123, 47, 255, 0.3);
+}
+
+/* ─── 10. STATS PANEL ───────────────────────────────────────────
+   Horizontal rows showing live counters.
+   Uses flex to push the value to the right.
+   ──────────────────────────────────────────────────────────────── */
+.stat-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.35rem 0;
+  font-size: 0.82rem;
+  /* Thin bottom border between stat rows */
+  border-bottom: 1px solid rgba(123, 47, 255, 0.1);
+}
+
+.stat-row:last-child {
+  border-bottom: none;
+}
+
+.stat-label {
+  color: var(--clr-text-dim);
+}
+
+.stat-value {
+  color: var(--clr-swapping);
+  font-weight: 600;
+}
+
+/* ─── 11. COMPLEXITY TABLE ──────────────────────────────────────
+   Minimal table for Big-O info. Header row has an accent
+   background. Cells are bordered with the neon stroke.
+   ──────────────────────────────────────────────────────────────── */
+#complexity-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.78rem;
+}
+
+#complexity-table th,
+#complexity-table td {
+  padding: 0.45rem 0.5rem;
+  text-align: left;
+  border: 1px solid rgba(123, 47, 255, 0.2);
+}
+
+/* Header cells — filled accent background */
+#complexity-table th {
+  background: rgba(123, 47, 255, 0.15);
+  color: var(--clr-accent);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Data cells — default text color with monospace for Big-O notation */
+#complexity-table td {
+  color: var(--clr-text);
+}
+
+/* ─── 12. ALGORITHM DESCRIPTION ─────────────────────────────────
+   Short paragraph explaining the currently selected algorithm.
+   ──────────────────────────────────────────────────────────────── */
+#algo-description {
+  font-size: 0.8rem;
+  line-height: 1.6;
+  color: var(--clr-text-dim);
+}
+
+/* ─── 13. COLOR LEGEND ──────────────────────────────────────────
+   2-column grid of color swatches + labels. Each swatch is a
+   small colored square matching the corresponding CSS variable.
+   ──────────────────────────────────────────────────────────────── */
+.legend-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.78rem;
+  color: var(--clr-text-dim);
+}
+
+/* Base swatch styling — rounded square with glow */
+.legend-swatch {
+  width: 16px;
+  height: 16px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+/* Swatch color per state */
+.default-swatch {
+  background: linear-gradient(to top, var(--clr-bar), var(--clr-bar-end));
+}
+
+.comparing-swatch {
+  background: var(--clr-comparing);
+  box-shadow: 0 0 6px var(--clr-comparing);
+}
+
+.swapping-swatch {
+  background: var(--clr-swapping);
+  box-shadow: 0 0 6px var(--clr-swapping);
+}
+
+.pivot-swatch {
+  background: var(--clr-pivot);
+  box-shadow: 0 0 6px var(--clr-pivot);
+}
+
+.sorted-swatch {
+  background: var(--clr-sorted);
+  box-shadow: 0 0 6px var(--clr-sorted);
+}
+
+/* ─── 14. KEYFRAME ANIMATIONS ───────────────────────────────────
+   sorted-flash: quick scale-pop + brightness flash when a bar
+   reaches its final sorted position.
+   pulse-run:    glow pulse on the Run button while sort is active.
+   ──────────────────────────────────────────────────────────────── */
+
+/* Flash-pop when a bar becomes sorted */
+@keyframes sorted-flash {
+  0% {
+    transform: scaleY(1);
+    filter: brightness(1);
+  }
+  50% {
+    transform: scaleY(1.08);
+    filter: brightness(1.6);
+  }
+  100% {
+    transform: scaleY(1);
+    filter: brightness(1);
+  }
+}
+
+/* Pulsing glow on the Run button while sorting is in progress */
+@keyframes pulse-run {
+  0%, 100% {
+    box-shadow: 0 0 12px rgba(57, 255, 20, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 28px rgba(57, 255, 20, 0.7);
+  }
+}
+
+/* ─── 15. RESPONSIVE / MEDIA QUERIES ────────────────────────────
+   On narrow viewports (< 860px) the grid collapses to a single
+   column so the controls stack below the visualizer.
+   ──────────────────────────────────────────────────────────────── */
+@media (max-width: 860px) {
+  #app-main {
+    grid-template-columns: 1fr;
+  }
+
+  /* Reduce min-height on smaller screens to save vertical space */
+  #bar-container {
+    min-height: 250px;
+  }
+}

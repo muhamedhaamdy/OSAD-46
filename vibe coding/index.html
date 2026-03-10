@@ -1,0 +1,227 @@
+<!--
+ ╔══════════════════════════════════════════════════════════════════╗
+ ║  File:         index.html                                       ║
+ ║  Project:      Sorting Algorithm Visualizer                     ║
+ ║  Author:       Hamdy                                            ║
+ ║  Purpose:      Main HTML page that provides the structure for   ║
+ ║                the sorting visualizer application. Contains     ║
+ ║                bar chart container, algorithm tabs, control     ║
+ ║                sliders, action buttons, live stats panel,       ║
+ ║                complexity table, algorithm description, and     ║
+ ║                color legend.                                    ║
+ ║  Dependencies: style.css, js/main.js,                           ║
+ ║                js/sorting algorithms/bubbleSort.js,             ║
+ ║                js/sorting algorithms/insertionSort.js,          ║
+ ║                js/sorting algorithms/selectionSort.js,          ║
+ ║                js/sorting algorithms/mergeSort.js               ║
+ ║  Structure:    1. Head (meta, title, fonts, stylesheet)         ║
+ ║                2. Header                                        ║
+ ║                3. Main grid layout                              ║
+ ║                   a. Visualizer panel (tabs + bar container)    ║
+ ║                   b. Controls panel (sliders, buttons, stats,   ║
+ ║                      complexity table, description, legend)     ║
+ ║                4. Script imports                                ║
+ ╚══════════════════════════════════════════════════════════════════╝
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- ─── META & TITLE ─── -->
+  <!-- Character encoding and responsive viewport for all devices -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Interactive sorting algorithm visualizer featuring Bubble, Insertion, Selection, and Merge Sort with real-time animation and statistics." />
+  <title>Sorting Algorithm Visualizer</title>
+
+  <!-- ─── FONTS ─── -->
+  <!-- Google Fonts: Orbitron for headings (cyberpunk feel), Fira Code for monospace stats -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Orbitron:wght@500;700;900&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- ─── STYLESHEET ─── -->
+  <!-- Main application styles — dark cyberpunk terminal aesthetic -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- ═══════════════════════════════════════════════════════════════
+       HEADER — Application title and tagline
+       ═══════════════════════════════════════════════════════════════ -->
+  <header id="app-header">
+    <h1>⚡ Sorting Visualizer</h1>
+    <p class="tagline">Watch algorithms in action</p>
+  </header>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       MAIN GRID — Two-column layout: visualizer (left) + controls (right)
+       ═══════════════════════════════════════════════════════════════ -->
+  <main id="app-main">
+
+    <!-- ─── VISUALIZER PANEL (left column) ─── -->
+    <!-- Contains algorithm tab buttons and the bar chart area -->
+    <section id="visualizer-panel" aria-label="Sorting Visualizer">
+
+      <!-- ─── ALGORITHM TABS ─── -->
+      <!-- Each button selects a sorting algorithm; the active tab gets .active class -->
+      <nav id="algo-tabs" aria-label="Algorithm Selection">
+        <button class="tab-btn active" data-algo="bubble" id="tab-bubble">Bubble</button>
+        <button class="tab-btn" data-algo="insertion" id="tab-insertion">Insertion</button>
+        <button class="tab-btn" data-algo="selection" id="tab-selection">Selection</button>
+        <button class="tab-btn" data-algo="merge" id="tab-merge">Merge</button>
+      </nav>
+
+      <!-- ─── BAR CHART CONTAINER ─── -->
+      <!-- Bars are dynamically rendered here by main.js; each bar is a <div> -->
+      <div id="bar-container" aria-label="Sorting Bars"></div>
+    </section>
+
+    <!-- ─── CONTROLS PANEL (right column) ─── -->
+    <!-- Sliders, action buttons, live stats, complexity info, description, legend -->
+    <aside id="controls-panel" aria-label="Controls">
+
+      <!-- ─── CONTROL SLIDERS ─── -->
+      <!-- Range inputs for adjusting array size and animation speed -->
+      <div id="sliders" class="control-group">
+        <h2 class="section-title">Controls</h2>
+
+        <!-- Array size slider: determines how many bars are rendered -->
+        <label for="size-slider" class="slider-label">
+          Array Size: <span id="size-value">50</span>
+        </label>
+        <input
+          type="range"
+          id="size-slider"
+          min="10"
+          max="200"
+          value="50"
+          aria-label="Array Size"
+        />
+
+        <!-- Speed slider: controls the delay (ms) between animation steps -->
+        <label for="speed-slider" class="slider-label">
+          Speed: <span id="speed-value">50</span>ms
+        </label>
+        <input
+          type="range"
+          id="speed-slider"
+          min="1"
+          max="200"
+          value="50"
+          aria-label="Animation Speed"
+        />
+      </div>
+
+      <!-- ─── ACTION BUTTONS ─── -->
+      <!-- Run starts sorting, Stop halts mid-sort, Regenerate creates a new array -->
+      <div id="action-buttons" class="control-group">
+        <button id="btn-run" class="action-btn run-btn">▶ Run</button>
+        <button id="btn-stop" class="action-btn stop-btn" disabled>■ Stop</button>
+        <button id="btn-regenerate" class="action-btn regen-btn">⟳ Regenerate</button>
+      </div>
+
+      <!-- ─── LIVE STATS PANEL ─── -->
+      <!-- Displays real-time counters for comparisons, swaps, and elapsed time -->
+      <div id="stats-panel" class="control-group">
+        <h2 class="section-title">Live Stats</h2>
+        <div class="stat-row">
+          <span class="stat-label">Comparisons:</span>
+          <span class="stat-value" id="stat-comparisons">0</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">Swaps:</span>
+          <span class="stat-value" id="stat-swaps">0</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">Elapsed:</span>
+          <span class="stat-value" id="stat-time">0 ms</span>
+        </div>
+      </div>
+
+      <!-- ─── COMPLEXITY TABLE ─── -->
+      <!-- Shows Big-O time & space complexity for the selected algorithm -->
+      <div id="complexity-section" class="control-group">
+        <h2 class="section-title">Complexity</h2>
+        <table id="complexity-table">
+          <thead>
+            <tr>
+              <th>Case</th>
+              <th>Time</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Best</td>
+              <td id="complexity-best">O(n)</td>
+            </tr>
+            <tr>
+              <td>Average</td>
+              <td id="complexity-avg">O(n²)</td>
+            </tr>
+            <tr>
+              <td>Worst</td>
+              <td id="complexity-worst">O(n²)</td>
+            </tr>
+            <tr>
+              <td>Space</td>
+              <td id="complexity-space">O(1)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ─── ALGORITHM DESCRIPTION ─── -->
+      <!-- Text description of how the currently selected algorithm works -->
+      <div id="description-section" class="control-group">
+        <h2 class="section-title">How It Works</h2>
+        <p id="algo-description">
+          Bubble Sort repeatedly steps through the list, compares adjacent
+          elements, and swaps them if they are in the wrong order. The pass
+          through the list is repeated until the list is sorted.
+        </p>
+      </div>
+
+      <!-- ─── COLOR LEGEND ─── -->
+      <!-- Explains what each bar color means during the visualisation -->
+      <div id="legend-section" class="control-group">
+        <h2 class="section-title">Legend</h2>
+        <div class="legend-grid">
+          <div class="legend-item">
+            <span class="legend-swatch default-swatch"></span>
+            <span>Unsorted</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-swatch comparing-swatch"></span>
+            <span>Comparing</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-swatch swapping-swatch"></span>
+            <span>Swapping</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-swatch pivot-swatch"></span>
+            <span>Pivot / Min</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-swatch sorted-swatch"></span>
+            <span>Sorted</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       SCRIPT IMPORTS — Algorithm modules first, then main entry point
+       Order matters: algorithm functions must be defined before main.js
+       references them in the dispatcher.
+       ═══════════════════════════════════════════════════════════════ -->
+  <script src="js/sorting algorithms/bubbleSort.js"></script>
+  <script src="js/sorting algorithms/insertionSort.js"></script>
+  <script src="js/sorting algorithms/selectionSort.js"></script>
+  <script src="js/sorting algorithms/mergeSort.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
