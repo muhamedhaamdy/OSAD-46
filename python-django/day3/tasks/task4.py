@@ -1,5 +1,3 @@
-from helper import valid_id
-
 student_name = ''
 student_subject = ''
 student_grade = ''
