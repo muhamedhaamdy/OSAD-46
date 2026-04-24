@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Markdown Export</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.3.0/github-markdown-dark.min.css">
+  <script>
+      window.MathJax = {
+          tex: {
+              inlineMath: [['$', '$'], ['\\(', '\\)']],
+              displayMath: [['$$', '$$'], ['\\[', '\\]']],
+              processEscapes: true
+          }
+      };
+  </script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js"></script>
+  <style>
+      body {
+          background-color: #0d1117;
+          color: #c9d1d9;
+      }
+      .markdown-body {
+          box-sizing: border-box;
+          min-width: 200px;
+          max-width: 980px;
+          margin: 0 auto;
+          padding: 45px;
+          background-color: #0d1117;
+          color: #c9d1d9;
+      }
+
+      /* Syntax Highlighting */
+      .hljs-doctag, .hljs-keyword, .hljs-template-tag, .hljs-template-variable, .hljs-type, .hljs-variable.language_ { color: #ff7b72; }
+      .hljs-title, .hljs-title.class_, .hljs-title.class_.inherited__, .hljs-title.function_ { color: #d2a8ff; }
+      .hljs-attr, .hljs-attribute, .hljs-literal, .hljs-meta, .hljs-number, .hljs-operator, .hljs-variable, .hljs-selector-attr, .hljs-selector-class, .hljs-selector-id { color: #79c0ff; }
+      .hljs-regexp, .hljs-string, .hljs-meta .hljs-string { color: #a5d6ff; }
+      .hljs-built_in, .hljs-symbol { color: #ffa657; }
+      .hljs-comment, .hljs-code, .hljs-formula { color: #8b949e; }
+      .hljs-name, .hljs-quote, .hljs-selector-tag, .hljs-selector-pseudo { color: #7ee787; }
+      .hljs-subst { color: #c9d1d9; }
+      .hljs-section { color: #1f6feb; font-weight: bold; }
+      .hljs-bullet { color: #79c0ff; }
+      .hljs-emphasis { font-style: italic; }
+      .hljs-strong { font-weight: bold; }
+      .hljs-addition { color: #aff5b4; background-color: #033a16; }
+      .hljs-deletion { color: #ffdcd7; background-color: #67060c; }
+
+      .markdown-alert {
+          padding: 0.5rem 1rem;
+          margin-bottom: 16px;
+          border-left: 0.25em solid;
+          border-radius: 0.375rem;
+      }
+      .markdown-alert > :last-child {
+          margin-bottom: 0;
+      }
+      .markdown-alert-title {
+          margin: 0 0 8px;
+          font-weight: 600;
+          line-height: 1.25;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+      }
+      .markdown-alert-icon {
+          display: inline-flex;
+          width: 16px;
+          height: 16px;
+      }
+      .markdown-alert-icon svg {
+          width: 16px;
+          height: 16px;
+          fill: currentColor;
+      }
+      .markdown-alert-note { color: #4493f8; border-left-color: #4493f8; background-color: rgba(31, 111, 235, 0.15); }
+      .markdown-alert-tip { color: #3fb950; border-left-color: #3fb950; background-color: rgba(35, 134, 54, 0.15); }
+      .markdown-alert-important { color: #ab7df8; border-left-color: #ab7df8; background-color: rgba(137, 87, 229, 0.15); }
+      .markdown-alert-warning { color: #d29922; border-left-color: #d29922; background-color: rgba(210, 153, 34, 0.18); }
+      .markdown-alert-caution { color: #f85149; border-left-color: #f85149; background-color: rgba(248, 81, 73, 0.18); }
+      .markdown-alert > *:not(.markdown-alert-title) { color: #c9d1d9; }
+
+      @media (max-width: 767px) {
+          .markdown-body {
+              padding: 15px;
+          }
+      }
+  </style>
+</head>
+<body>
+  <article class="markdown-body">
+      <h1>🏗️ SOLID Principles — The Complete Interview &amp; Understanding Guide</h1>
+<blockquote>
+<p><em>"The goal of software architecture is to minimize the human resources required to build and maintain the required system."</em> — Robert C. Martin (Uncle Bob)</p>
+</blockquote>
+<hr>
+<h2>🗺️ Table of Contents</h2>
+<ol>
+<li><a href="#-quick-reference-card">🧭 Quick Reference Card</a></li>
+<li><a href="#-principles-relationship-map">🔗 Principles Relationship Map</a></li>
+<li><a href="#-deep-dive--each-principle">📖 Deep Dive — Each Principle</a><ul>
+<li><a href="#s--single-responsibility-principle-srp">S — Single Responsibility Principle</a></li>
+<li><a href="#o--openclosed-principle-ocp">O — Open/Closed Principle</a></li>
+<li><a href="#l--liskov-substitution-principle-lsp">L — Liskov Substitution Principle</a></li>
+<li><a href="#i--interface-segregation-principle-isp">I — Interface Segregation Principle</a></li>
+<li><a href="#d--dependency-inversion-principle-dip">D — Dependency Inversion Principle</a></li>
+</ul>
+</li>
+<li><a href="#-tricky-interview-traps">🪤 Tricky Interview Traps</a></li>
+<li><a href="#-interview-answer-templates">💬 Interview Answer Templates</a></li>
+<li><a href="#-real-scenarios-bank">🎯 Real Scenarios Bank</a></li>
+</ol>
+<hr>
+<h2>🧭 Quick Reference Card</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Principle</th>
+<th>One-Liner</th>
+<th>Violation Alarm 🚨</th>
+<th>Key Tool</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>S</strong></td>
+<td>Single Responsibility</td>
+<td><em>One class = One reason to change</em></td>
+<td>You describe the class with <strong>"AND"</strong></td>
+<td>Separate classes</td>
+</tr>
+<tr>
+<td><strong>O</strong></td>
+<td>Open/Closed</td>
+<td><em>Open to extend, Closed to modify</em></td>
+<td>You keep adding <strong><code>else if</code></strong> for new types</td>
+<td>Interfaces + Polymorphism</td>
+</tr>
+<tr>
+<td><strong>L</strong></td>
+<td>Liskov Substitution</td>
+<td><em>Subclass must fully honor the parent's contract</em></td>
+<td>You write <strong><code>throw new UnsupportedOperationException()</code></strong> in a child</td>
+<td>Proper inheritance hierarchy</td>
+</tr>
+<tr>
+<td><strong>I</strong></td>
+<td>Interface Segregation</td>
+<td><em>Don't force classes to implement unused methods</em></td>
+<td>Your interface has methods the implementer leaves <strong>empty or throws</strong></td>
+<td>Split interfaces</td>
+</tr>
+<tr>
+<td><strong>D</strong></td>
+<td>Dependency Inversion</td>
+<td><em>Depend on abstractions, not concrete classes</em></td>
+<td>You use <strong><code>new ConcreteClass()</code></strong> inside a high-level module</td>
+<td>Constructor Injection + Interfaces</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>🔗 Principles Relationship Map</h2>
+<pre><code class="hljs plaintext">         SRP
+          │
+          │ "Clean classes enable..."
+          ▼
+         LSP ◄──────────────────────── ISP
+          │      "Fat interfaces            │
+          │       cause LSP violations"     │
+          │                                 │
+          │ "Proper hierarchy enables..."   │ "Segregated interfaces
+          ▼                                 │  enable clean contracts"
+         OCP ◄──────────────────────── DIP
+               "DIP is the mechanism
+                that achieves OCP"</code></pre><h3>How They Connect in Plain English</h3>
+<ul>
+<li><strong>SRP → LSP</strong>: When a class has one clear role, children inherit less irrelevant behavior → fewer LSP violations.</li>
+<li><strong>ISP → LSP</strong>: Fat interfaces force classes to implement unused methods → leads to <code>throw new Error()</code> → breaks LSP.</li>
+<li><strong>DIP → OCP</strong>: When you depend on interfaces (DIP), you can add new implementations without modifying existing code (OCP).</li>
+<li><strong>All of them → Testability</strong>: The more you apply SOLID, the easier Unit Testing becomes because everything is isolated and injectable.</li>
+</ul>
+<hr>
+<h2>📖 Deep Dive — Each Principle</h2>
+<hr>
+<h3>S — Single Responsibility Principle (SRP)</h3>
+<blockquote>
+<p><em>"A class should have one, and only one, reason to change."</em></p>
+</blockquote>
+<h4>🧠 The Mental Model</h4>
+<p>Ask yourself: <strong>"Who would request a change to this class?"</strong>
+If the answer is <strong>more than one type of stakeholder</strong> (e.g., both the DBA and the Marketing team), the class has more than one responsibility.</p>
+<h4>❌ Bad Design</h4>
+<pre><code class="hljs java"><span class="hljs-keyword">class</span> <span class="hljs-title class_">User</span> {
+    <span class="hljs-keyword">private</span> String name;
+    <span class="hljs-keyword">private</span> String email;
+
+    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">getName</span><span class="hljs-params">()</span> { <span class="hljs-keyword">return</span> name; }
+
+    <span class="hljs-comment">// Responsibility 1: Data management ✓</span>
+    <span class="hljs-comment">// Responsibility 2: Database logic ✗</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">saveToDatabase</span><span class="hljs-params">()</span> {
+        System.out.println(<span class="hljs-string">"Saving "</span> + name + <span class="hljs-string">" to DB..."</span>);
+    }
+
+    <span class="hljs-comment">// Responsibility 3: Email logic ✗</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">sendWelcomeEmail</span><span class="hljs-params">()</span> {
+        System.out.println(<span class="hljs-string">"Sending email to "</span> + email);
+    }
+}</code></pre><p><strong>Why it hurts:</strong> A change in your email provider forces you to open the <code>User</code> class — which has nothing to do with emails at its core.</p>
+<h4>✅ Good Design</h4>
+<pre><code class="hljs java"><span class="hljs-comment">// Responsibility: Holds user data only</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">User</span> {
+    <span class="hljs-keyword">private</span> String name;
+    <span class="hljs-keyword">private</span> String email;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-title function_">User</span><span class="hljs-params">(String name, String email)</span> {
+        <span class="hljs-built_in">this</span>.name = name;
+        <span class="hljs-built_in">this</span>.email = email;
+    }
+    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">getName</span><span class="hljs-params">()</span> { <span class="hljs-keyword">return</span> name; }
+    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">getEmail</span><span class="hljs-params">()</span> { <span class="hljs-keyword">return</span> email; }
+}
+
+<span class="hljs-comment">// Responsibility: Database operations only</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">UserRepository</span> {
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">save</span><span class="hljs-params">(User user)</span> {
+        System.out.println(<span class="hljs-string">"Saving "</span> + user.getName() + <span class="hljs-string">" to DB..."</span>);
+    }
+}
+
+<span class="hljs-comment">// Responsibility: Email operations only</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">EmailService</span> {
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">sendWelcomeEmail</span><span class="hljs-params">(User user)</span> {
+        System.out.println(<span class="hljs-string">"Sending email to "</span> + user.getEmail());
+    }
+}</code></pre><h4>🎯 Quick Summary</h4>
+<table>
+<thead>
+<tr>
+<th>Signal</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Class description contains "AND"</td>
+<td>Multiple responsibilities</td>
+</tr>
+<tr>
+<td>Multiple teams edit the same file</td>
+<td>SRP violation</td>
+</tr>
+<tr>
+<td>Hard to unit-test without mocking unrelated things</td>
+<td>SRP violation</td>
+</tr>
+</tbody></table>
+<hr>
+<h3>O — Open/Closed Principle (OCP)</h3>
+<blockquote>
+<p><em>"Software entities should be open for extension, but closed for modification."</em></p>
+</blockquote>
+<h4>🧠 The Mental Model</h4>
+<p>Imagine a <strong>PlayStation</strong> 🎮 — you never open the console to add a new game. You just insert a new disk. The console is <em>closed for modification</em> but <em>open for extension</em> (any game disc). Your classes should work the same way.</p>
+<h4>❌ Bad Design</h4>
+<pre><code class="hljs java"><span class="hljs-keyword">class</span> <span class="hljs-title class_">PaymentProcessor</span> {
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">processPayment</span><span class="hljs-params">(String paymentType, <span class="hljs-type">double</span> amount)</span> {
+        <span class="hljs-keyword">if</span> (paymentType.equals(<span class="hljs-string">"Visa"</span>)) {
+            System.out.println(<span class="hljs-string">"Processing Visa: $"</span> + amount);
+        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (paymentType.equals(<span class="hljs-string">"PayPal"</span>)) {
+            System.out.println(<span class="hljs-string">"Processing PayPal: $"</span> + amount);
+        }
+        <span class="hljs-comment">// Adding "Crypto"? You MUST modify this class! 🚨</span>
+    }
+}</code></pre><p><strong>Why it hurts:</strong> Every new payment method requires touching (and risking) already-tested code.</p>
+<h4>✅ Good Design</h4>
+<pre><code class="hljs java"><span class="hljs-comment">// The abstraction (the "disk slot")</span>
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">PaymentMethod</span> {
+    <span class="hljs-keyword">void</span> <span class="hljs-title function_">pay</span><span class="hljs-params">(<span class="hljs-type">double</span> amount)</span>;
+}
+
+<span class="hljs-comment">// Each payment type is a new "disk" — no existing code is touched</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">VisaPayment</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">PaymentMethod</span> {
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">pay</span><span class="hljs-params">(<span class="hljs-type">double</span> amount)</span> {
+        System.out.println(<span class="hljs-string">"Processing Visa: $"</span> + amount);
+    }
+}
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">PayPalPayment</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">PaymentMethod</span> {
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">pay</span><span class="hljs-params">(<span class="hljs-type">double</span> amount)</span> {
+        System.out.println(<span class="hljs-string">"Processing PayPal: $"</span> + amount);
+    }
+}
+
+<span class="hljs-comment">// Adding CryptoPayment? Create a new class — never touch this one</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">PaymentProcessor</span> {
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">process</span><span class="hljs-params">(PaymentMethod method, <span class="hljs-type">double</span> amount)</span> {
+        method.pay(amount);
+    }
+}</code></pre><h4>🎯 Quick Summary</h4>
+<table>
+<thead>
+<tr>
+<th>Signal</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Growing <code>if/else</code> or <code>switch</code> based on type</td>
+<td>OCP violation</td>
+</tr>
+<tr>
+<td>Adding a feature requires editing existing tested code</td>
+<td>OCP violation</td>
+</tr>
+<tr>
+<td>New class added = new feature works</td>
+<td>OCP applied correctly ✅</td>
+</tr>
+</tbody></table>
+<hr>
+<h3>L — Liskov Substitution Principle (LSP)</h3>
+<blockquote>
+<p><em>"Objects of a subclass must be replaceable for objects of the base class without breaking the application."</em></p>
+</blockquote>
+<h4>🧠 The Mental Model</h4>
+<p>If your code works perfectly with the <strong>parent class</strong>, it must work equally well when you swap it with <strong>any child class</strong>. No surprises. No crashes. No unexpected behavior.</p>
+<p>Think of it as a <strong>USB-C socket</strong> 🔌 — any USB-C cable (child) should work when plugged into any USB-C port (parent's contract). A cable that randomly cuts power without warning breaks the contract.</p>
+<h4>❌ Bad Design — The Classic Bird Problem</h4>
+<pre><code class="hljs java"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Bird</span> {
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">fly</span><span class="hljs-params">()</span> {
+        System.out.println(<span class="hljs-string">"Flying high!"</span>);
+    }
+}
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Ostrich</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">Bird</span> {
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">fly</span><span class="hljs-params">()</span> {
+        <span class="hljs-comment">// 🚨 VIOLATION: Breaking the parent's contract!</span>
+        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">UnsupportedOperationException</span>(<span class="hljs-string">"Ostriches can't fly!"</span>);
+    }
+}
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">BirdSimulator</span> {
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">letBirdsFly</span><span class="hljs-params">(List&lt;Bird&gt; birds)</span> {
+        <span class="hljs-keyword">for</span> (Bird bird : birds) {
+            bird.fly(); <span class="hljs-comment">// App crashes when Ostrich is in the list!</span>
+        }
+    }
+}</code></pre><h4>❌ Bad Design — The Famous Square/Rectangle Trap</h4>
+<pre><code class="hljs java"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Rectangle</span> {
+    <span class="hljs-keyword">protected</span> <span class="hljs-type">int</span> width;
+    <span class="hljs-keyword">protected</span> <span class="hljs-type">int</span> height;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">setWidth</span><span class="hljs-params">(<span class="hljs-type">int</span> width)</span> { <span class="hljs-built_in">this</span>.width = width; }
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">setHeight</span><span class="hljs-params">(<span class="hljs-type">int</span> height)</span> { <span class="hljs-built_in">this</span>.height = height; }
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">getArea</span><span class="hljs-params">()</span> { <span class="hljs-keyword">return</span> width * height; }
+}
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Square</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">Rectangle</span> {
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">setWidth</span><span class="hljs-params">(<span class="hljs-type">int</span> width)</span> {
+        <span class="hljs-built_in">this</span>.width = width;
+        <span class="hljs-built_in">this</span>.height = width; <span class="hljs-comment">// 🚨 Silently changes height too!</span>
+    }
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">setHeight</span><span class="hljs-params">(<span class="hljs-type">int</span> height)</span> {
+        <span class="hljs-built_in">this</span>.width = height; <span class="hljs-comment">// 🚨 Silently changes width too!</span>
+        <span class="hljs-built_in">this</span>.height = height;
+    }
+}
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">AreaTest</span> {
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">testArea</span><span class="hljs-params">(Rectangle rect)</span> {
+        rect.setWidth(<span class="hljs-number">5</span>);
+        rect.setHeight(<span class="hljs-number">4</span>);
+        <span class="hljs-comment">// Expected: 5 * 4 = 20</span>
+        <span class="hljs-comment">// If rect is a Square: setHeight(4) makes BOTH sides 4, so area = 16!</span>
+        System.out.println(<span class="hljs-string">"Expected 20, got: "</span> + rect.getArea());
+    }
+}</code></pre><h4>✅ Good Design</h4>
+<pre><code class="hljs java"><span class="hljs-comment">// Base: only common behavior</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Bird</span> {
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">eat</span><span class="hljs-params">()</span> {
+        System.out.println(<span class="hljs-string">"Eating..."</span>);
+    }
+}
+
+<span class="hljs-comment">// Separate contract for flying ability</span>
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">FlyingBird</span> {
+    <span class="hljs-keyword">void</span> <span class="hljs-title function_">fly</span><span class="hljs-params">()</span>;
+}
+
+<span class="hljs-comment">// Sparrow can fly → implements both</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Sparrow</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">Bird</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">FlyingBird</span> {
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">fly</span><span class="hljs-params">()</span> {
+        System.out.println(<span class="hljs-string">"Sparrow is flying!"</span>);
+    }
+}
+
+<span class="hljs-comment">// Ostrich cannot fly → doesn't implement FlyingBird</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Ostrich</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">Bird</span> {
+    <span class="hljs-comment">// Has eat() from Bird — no fly() to break anything</span>
+}</code></pre><h4>🎯 Quick Summary</h4>
+<table>
+<thead>
+<tr>
+<th>Signal</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>throw new UnsupportedOperationException()</code> in an override</td>
+<td>LSP violation</td>
+</tr>
+<tr>
+<td>Empty method body in a child class</td>
+<td>LSP violation</td>
+</tr>
+<tr>
+<td>Child adds unexpected side effects to parent methods</td>
+<td>LSP violation</td>
+</tr>
+<tr>
+<td>Child class can always replace parent without any code change</td>
+<td>LSP applied correctly ✅</td>
+</tr>
+</tbody></table>
+<hr>
+<h3>I — Interface Segregation Principle (ISP)</h3>
+<blockquote>
+<p><em>"Clients should not be forced to depend on interfaces they do not use."</em></p>
+</blockquote>
+<h4>🧠 The Mental Model</h4>
+<p>Imagine a restaurant menu 🍽️ that weighs 5kg — it includes food, drinks, kitchen equipment specs, and supplier contracts. You just want the grill section. Forcing you to carry the full menu is exactly what a <strong>Fat Interface</strong> does. ISP says: give people only the menu they need.</p>
+<h4>❌ Bad Design</h4>
+<pre><code class="hljs java"><span class="hljs-comment">// Fat interface — forces all implementers to implement everything</span>
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">IMachine</span> {
+    <span class="hljs-keyword">void</span> <span class="hljs-title function_">print</span><span class="hljs-params">(String document)</span>;
+    <span class="hljs-keyword">void</span> <span class="hljs-title function_">scan</span><span class="hljs-params">(String document)</span>;
+    <span class="hljs-keyword">void</span> <span class="hljs-title function_">fax</span><span class="hljs-params">(String document)</span>;
+}
+
+<span class="hljs-comment">// Old printer only prints — but is FORCED to deal with scan &amp; fax</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">OldSchoolPrinter</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">IMachine</span> {
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">print</span><span class="hljs-params">(String doc)</span> {
+        System.out.println(<span class="hljs-string">"Printing..."</span>);
+    }
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">scan</span><span class="hljs-params">(String doc)</span> {
+        <span class="hljs-comment">// 🚨 VIOLATION: Forced to implement something it doesn't support</span>
+        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">UnsupportedOperationException</span>(<span class="hljs-string">"Cannot scan!"</span>);
+    }
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">fax</span><span class="hljs-params">(String doc)</span> {
+        <span class="hljs-comment">// 🚨 VIOLATION: Same problem</span>
+        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">UnsupportedOperationException</span>(<span class="hljs-string">"Cannot fax!"</span>);
+    }
+}</code></pre><h4>✅ Good Design</h4>
+<pre><code class="hljs java"><span class="hljs-comment">// Small, focused interfaces</span>
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">Printer</span> {
+    <span class="hljs-keyword">void</span> <span class="hljs-title function_">print</span><span class="hljs-params">(String document)</span>;
+}
+
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">Scanner</span> {
+    <span class="hljs-keyword">void</span> <span class="hljs-title function_">scan</span><span class="hljs-params">(String document)</span>;
+}
+
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">Fax</span> {
+    <span class="hljs-keyword">void</span> <span class="hljs-title function_">fax</span><span class="hljs-params">(String document)</span>;
+}
+
+<span class="hljs-comment">// Old printer: only what it needs</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">OldSchoolPrinter</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">Printer</span> {
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">print</span><span class="hljs-params">(String doc)</span> {
+        System.out.println(<span class="hljs-string">"Printing..."</span>);
+    }
+}
+
+<span class="hljs-comment">// Modern printer: takes everything it supports (Java allows multiple interfaces)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">MultiFunctionPrinter</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">Printer</span>, Scanner, Fax {
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">print</span><span class="hljs-params">(String doc)</span> { System.out.println(<span class="hljs-string">"Printing..."</span>); }
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">scan</span><span class="hljs-params">(String doc)</span> { System.out.println(<span class="hljs-string">"Scanning..."</span>); }
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">fax</span><span class="hljs-params">(String doc)</span> { System.out.println(<span class="hljs-string">"Faxing..."</span>); }
+}</code></pre><h4>ISP vs SRP — The Key Distinction</h4>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>SRP</th>
+<th>ISP</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Focuses on</strong></td>
+<td>Inside the class (implementation)</td>
+<td>Outside the class (the contract/interface)</td>
+</tr>
+<tr>
+<td><strong>Question asked</strong></td>
+<td>Does this class do too many things?</td>
+<td>Does this interface force unused methods on clients?</td>
+</tr>
+<tr>
+<td><strong>Scope</strong></td>
+<td>Single class internals</td>
+<td>Communication between classes</td>
+</tr>
+</tbody></table>
+<h4>🎯 Quick Summary</h4>
+<table>
+<thead>
+<tr>
+<th>Signal</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Interface has unrelated methods grouped together</td>
+<td>ISP violation</td>
+</tr>
+<tr>
+<td>Implementer throws exceptions or leaves methods empty</td>
+<td>ISP violation (also causes LSP violation!)</td>
+</tr>
+<tr>
+<td>Classes only implement what they truly use</td>
+<td>ISP applied correctly ✅</td>
+</tr>
+</tbody></table>
+<hr>
+<h3>D — Dependency Inversion Principle (DIP)</h3>
+<blockquote>
+<p><em>"High-level modules should not depend on low-level modules. Both should depend on abstractions."</em></p>
+</blockquote>
+<h4>🧠 The Mental Model</h4>
+<p>Think of a <strong>wall socket</strong> 🔌 — your wall (high-level) doesn't depend on a specific lamp (low-level). Both depend on the socket standard (abstraction). You can plug in a lamp, a fan, or a TV — the wall doesn't care. That's DIP.</p>
+<h4>❌ Bad Design</h4>
+<pre><code class="hljs java"><span class="hljs-comment">// Low-level module</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">MySQLDatabase</span> {
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">save</span><span class="hljs-params">(String data)</span> {
+        System.out.println(<span class="hljs-string">"Saving to MySQL: "</span> + data);
+    }
+}
+
+<span class="hljs-comment">// High-level module — Business Logic</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">UserService</span> {
+    <span class="hljs-comment">// 🚨 VIOLATION: Hardcoded dependency on a specific implementation</span>
+    <span class="hljs-keyword">private</span> MySQLDatabase database;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-title function_">UserService</span><span class="hljs-params">()</span> {
+        <span class="hljs-comment">// 🚨 VIOLATION: Direct instantiation — tightly coupled</span>
+        <span class="hljs-built_in">this</span>.database = <span class="hljs-keyword">new</span> <span class="hljs-title class_">MySQLDatabase</span>();
+    }
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">registerUser</span><span class="hljs-params">(String username)</span> {
+        database.save(username);
+    }
+}
+<span class="hljs-comment">// Want to switch to MongoDB? You MUST modify UserService!</span></code></pre><h4>✅ Good Design</h4>
+<pre><code class="hljs java"><span class="hljs-comment">// The abstraction (the "socket standard")</span>
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">Database</span> {
+    <span class="hljs-keyword">void</span> <span class="hljs-title function_">save</span><span class="hljs-params">(String data)</span>;
+}
+
+<span class="hljs-comment">// Low-level modules depend on the abstraction</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">MySQLDatabase</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">Database</span> {
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">save</span><span class="hljs-params">(String data)</span> {
+        System.out.println(<span class="hljs-string">"Saving to MySQL: "</span> + data);
+    }
+}
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">MongoDatabase</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">Database</span> {
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">save</span><span class="hljs-params">(String data)</span> {
+        System.out.println(<span class="hljs-string">"Saving to MongoDB: "</span> + data);
+    }
+}
+
+<span class="hljs-comment">// High-level module depends ONLY on the abstraction</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">UserService</span> {
+    <span class="hljs-keyword">private</span> Database database;
+
+    <span class="hljs-comment">// ✅ Constructor Injection — dependency is provided from outside</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-title function_">UserService</span><span class="hljs-params">(Database database)</span> {
+        <span class="hljs-built_in">this</span>.database = database;
+    }
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">registerUser</span><span class="hljs-params">(String username)</span> {
+        database.save(username);
+    }
+}
+
+<span class="hljs-comment">// Wiring in Main — swap databases without touching UserService!</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Main</span> {
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> {
+        <span class="hljs-type">Database</span> <span class="hljs-variable">db</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">MongoDatabase</span>(); <span class="hljs-comment">// Swap anytime, zero risk</span>
+        <span class="hljs-type">UserService</span> <span class="hljs-variable">service</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">UserService</span>(db);
+        service.registerUser(<span class="hljs-string">"Ahmed"</span>);
+    }
+}</code></pre><h4>DIP vs DI — Don't Confuse Them!</h4>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>DIP</th>
+<th>DI (Dependency Injection)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>What it is</strong></td>
+<td>A design <strong>principle</strong></td>
+<td>A design <strong>technique</strong></td>
+</tr>
+<tr>
+<td><strong>What it says</strong></td>
+<td>Depend on abstractions, not concretions</td>
+<td>Pass dependencies from outside rather than creating them inside</td>
+</tr>
+<tr>
+<td><strong>Relationship</strong></td>
+<td>The goal</td>
+<td>The tool to achieve the goal</td>
+</tr>
+</tbody></table>
+<h4>🎯 Quick Summary</h4>
+<table>
+<thead>
+<tr>
+<th>Signal</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>new ConcreteClass()</code> inside a high-level module</td>
+<td>DIP violation</td>
+</tr>
+<tr>
+<td>Hard to unit test without spinning up real DBs or APIs</td>
+<td>DIP violation</td>
+</tr>
+<tr>
+<td>Dependencies passed via constructor using interfaces</td>
+<td>DIP applied correctly ✅</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>🪤 Tricky Interview Traps</h2>
+<h3>Trap 1: "Can you give an example of SRP?"</h3>
+<p>❌ <strong>Weak answer:</strong> "A class should do only one thing."
+✅ <strong>Strong answer:</strong> "SRP is about <em>reasons to change</em>, not number of methods. A class with 15 methods can still follow SRP if all methods serve one actor. The real violation is when two different stakeholders — like a DBA and a Marketing manager — both have reasons to change the same class."</p>
+<hr>
+<h3>Trap 2: "Is the Square a Rectangle in OOP?"</h3>
+<p>❌ <strong>Weak answer:</strong> "Yes, mathematically a square is a rectangle."
+✅ <strong>Strong answer:</strong> "Mathematically yes, but not in OOP. A Rectangle contract allows independent width/height changes. A Square must keep them equal — so substituting a Square where a Rectangle is expected breaks behavior. LSP says the substitution must preserve correctness, and here it doesn't."</p>
+<hr>
+<h3>Trap 3: "What's the difference between ISP and SRP?"</h3>
+<p>❌ <strong>Weak answer:</strong> "They're the same thing basically."
+✅ <strong>Strong answer:</strong> "SRP is about a class's internal implementation — does it have one reason to change? ISP is about the external contract — does the interface force clients to depend on methods they don't use? SRP looks inward, ISP looks outward."</p>
+<hr>
+<h3>Trap 4: "What's the difference between DIP and Dependency Injection?"</h3>
+<p>❌ <strong>Weak answer:</strong> "They're the same."
+✅ <strong>Strong answer:</strong> "DIP is a principle — it tells you <em>what</em> to do: depend on abstractions. Dependency Injection is a technique — it tells you <em>how</em> to do it: pass your dependencies from outside via constructor, setter, or method injection. DI is the most common way to achieve DIP."</p>
+<hr>
+<h3>Trap 5: "Does DIP violate if I use <code>new</code> anywhere?"</h3>
+<p>❌ <strong>Weak answer:</strong> "Yes, you should never use <code>new</code>."
+✅ <strong>Strong answer:</strong> "Not always. Using <code>new</code> for Value Objects or simple data containers is fine. The violation occurs when a high-level module (containing business logic) directly instantiates a low-level module (like a database or HTTP client), creating tight coupling."</p>
+<hr>
+<h3>Trap 6: "Does applying ISP always lead to too many interfaces?"</h3>
+<p>❌ <strong>Weak answer:</strong> "No, you just split them all."
+✅ <strong>Strong answer:</strong> "Over-segregation is a real risk. The goal is to create client-specific interfaces — split only when methods serve genuinely different clients or change for different reasons. Methods that always travel together shouldn't be split."</p>
+<hr>
+<h2>💬 Interview Answer Templates</h2>
+<h3>Template: The 3-Part Answer Structure</h3>
+<blockquote>
+<p><strong>Definition</strong> → <strong>Problem it solves</strong> → <strong>How you apply it</strong></p>
+</blockquote>
+<hr>
+<p><strong>Q: What is SOLID?</strong></p>
+<blockquote>
+<p>"SOLID is a set of five object-oriented design principles introduced by Robert C. Martin (Uncle Bob) to create software that is easy to maintain, extend, and test. They address common code smells like rigidity, fragility, and immobility by promoting loose coupling and high cohesion."</p>
+</blockquote>
+<hr>
+<p><strong>Q: Why do we need SOLID?</strong></p>
+<blockquote>
+<p>"Without SOLID, codebases tend to become rigid — where a change in one place breaks something elsewhere — and fragile — where tests keep failing for unrelated reasons. SOLID helps us write code that's safe to change, easy to test, and scalable as the product grows."</p>
+</blockquote>
+<hr>
+<p><strong>Q: How does SOLID relate to testing?</strong></p>
+<blockquote>
+<p>"SOLID and testability are deeply connected. SRP isolates behavior making unit tests focused. DIP lets us inject mock dependencies instead of hitting real databases. OCP means tests for existing features never need to change when we add new ones. In short, the more SOLID your code is, the cheaper your test suite becomes."</p>
+</blockquote>
+<hr>
+<p><strong>Q: When should you NOT apply SOLID?</strong></p>
+<blockquote>
+<p>"SOLID adds classes and abstractions. For small scripts, throw-away tools, or early-stage prototypes where requirements are still unclear, applying SOLID aggressively is over-engineering. The real value of SOLID shows in systems that need to grow and be maintained by teams over months or years."</p>
+</blockquote>
+<hr>
+<h2>🎯 Real Scenarios Bank</h2>
+<h3>Scenario 1 — SRP 🧾</h3>
+<p><strong>Context:</strong> You're building a <code>Report</code> class. It holds report data, prints it to the console, and saves it to a file.</p>
+<p><strong>Problem:</strong> The marketing team asks for HTML output. Now you open <code>Report</code> — a data class — to change presentation logic.</p>
+<p><strong>Solution:</strong> Split into <code>Report</code> (data), <code>ReportPrinter</code> (output), and <code>ReportSaver</code> (persistence). Each has one reason to change.</p>
+<hr>
+<h3>Scenario 2 — OCP 💳</h3>
+<p><strong>Context:</strong> <code>PaymentProcessor</code> has a growing <code>if/else</code> block checking for Visa, PayPal, Apple Pay...</p>
+<p><strong>Problem:</strong> Every new payment provider requires editing the core processor — risking regressions.</p>
+<p><strong>Solution:</strong> Create a <code>PaymentMethod</code> interface. Each provider is a new class. <code>PaymentProcessor</code> is never touched again.</p>
+<hr>
+<h3>Scenario 3 — LSP 🏦</h3>
+<p><strong>Context:</strong> <code>BankAccount</code> has <code>withdraw()</code>. <code>FixedDepositAccount</code> extends it but throws an error on <code>withdraw()</code> because withdrawals aren't allowed.</p>
+<p><strong>Problem:</strong> Any code looping through <code>BankAccount</code> objects crashes when it hits a <code>FixedDepositAccount</code>.</p>
+<p><strong>Solution:</strong> Don't inherit withdrawal behavior if you can't honor it. Create a <code>WithdrawableAccount</code> interface implemented only by accounts that support withdrawal.</p>
+<hr>
+<h3>Scenario 4 — ISP 🎮</h3>
+<p><strong>Context:</strong> <code>CharacterActions</code> interface has <code>walk()</code>, <code>run()</code>, <code>shoot()</code>, <code>castMagic()</code>. A <code>Civilian</code> class is forced to implement <code>shoot()</code> and <code>castMagic()</code>.</p>
+<p><strong>Problem:</strong> Civilian throws exceptions for methods it doesn't support — ISP violation that causes LSP violation too.</p>
+<p><strong>Solution:</strong> Split into <code>Movable</code> (<code>walk</code>, <code>run</code>), <code>Shooter</code> (<code>shoot</code>), <code>Mage</code> (<code>castMagic</code>). Each class implements only what it needs.</p>
+<hr>
+<h3>Scenario 5 — DIP 📦</h3>
+<p><strong>Context:</strong> <code>OrderProcessor</code> directly instantiates <code>SMSService</code> to send order confirmations. The business now wants Email and WhatsApp support too.</p>
+<p><strong>Problem:</strong> <code>OrderProcessor</code> (high-level) is tightly coupled to <code>SMSService</code> (low-level). Every new channel means modifying business logic.</p>
+<p><strong>Solution:</strong> Create a <code>NotificationService</code> interface. <code>SMSService</code>, <code>EmailService</code>, <code>WhatsAppService</code> all implement it. Inject the interface into <code>OrderProcessor</code>'s constructor — it never knows or cares which channel is active.</p>
+<hr>
+<h2>🔁 The SOLID Chain — One Final View</h2>
+<pre><code class="hljs plaintext">You apply SRP
+    → Classes are small and focused
+        → Children inherit only relevant behavior
+            → LSP is easier to maintain
+
+You apply ISP
+    → Interfaces are small and specific
+        → Classes aren't forced into unused contracts
+            → Fewer LSP violations from "forced" empty methods
+
+You apply DIP
+    → High-level modules depend on interfaces
+        → Adding a new implementation is a new class, not a code change
+            → OCP is automatically achieved</code></pre><blockquote>
+<p><strong>The deeper truth:</strong> SOLID principles aren't five separate rules — they're five angles of the same philosophy: <em>write code that can grow without breaking what already works.</em></p>
+</blockquote>
+<hr>
+<p><em>Built from real learning sessions — every mistake and insight included.</em> 💪</p>
+
+  </article>
+  <script>
+      window.addEventListener('load', function () {
+          if (window.MathJax && typeof window.MathJax.typesetPromise === 'function') {
+              window.MathJax.typesetPromise().catch(function (err) {
+                  console.warn('MathJax typeset failed:', err);
+              });
+          }
+      });
+  </script>
+</body>
+</html>
